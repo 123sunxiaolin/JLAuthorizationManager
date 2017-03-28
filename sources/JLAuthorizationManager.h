@@ -34,7 +34,7 @@ typedef NS_ENUM(NSInteger, JLAuthorizationType) {
      */
     JLAuthorizationTypeCalendar,
     /**
-     *  备忘提醒/Reminder
+     *  提醒事项/Reminder
      */
     JLAuthorizationTypeReminder,
 };

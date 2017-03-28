@@ -14,6 +14,7 @@
 @import AVFoundation;
 @import AddressBook;
 @import Contacts;
+@import EventKit;
 
 #define IOS8 ([[[UIDevice currentDevice] systemVersion] doubleValue] >= 8.0)
 #define IOS9 ([[[UIDevice currentDevice] systemVersion] doubleValue] >= 9.0)
@@ -53,8 +54,16 @@
                                         unAuthorizedHandler:unAuthorizedHandler];
             break;
         case JLAuthorizationTypeAddressBook:
-            [self p_requestAddressBookWithAuthorizedHandler:authorizedHandler
+            [self p_requestAddressBookAccessWithAuthorizedHandler:authorizedHandler
                                         unAuthorizedHandler:unAuthorizedHandler];
+            break;
+        case JLAuthorizationTypeCalendar:
+            [self p_requestCalendarAccessWithAuthorizedHandler:authorizedHandler
+                                           unAuthorizedHandler:unAuthorizedHandler];
+            break;
+        case JLAuthorizationTypeReminder:
+            [self p_requestReminderAccessWithAuthorizedHandler:authorizedHandler
+                                           unAuthorizedHandler:unAuthorizedHandler];
             break;
             
             
@@ -176,7 +185,7 @@
 }
 
 #pragma mark - AddressBook
-- (void)p_requestAddressBookWithAuthorizedHandler:(void(^)())authorizedHandler
+- (void)p_requestAddressBookAccessWithAuthorizedHandler:(void(^)())authorizedHandler
                               unAuthorizedHandler:(void(^)())unAuthorizedHandler{
     if (IOS9) {
         
@@ -233,6 +242,55 @@
         }
 #pragma clang diagnostic pop
         
+    }
+}
+
+#pragma mark - Calendar
+- (void)p_requestCalendarAccessWithAuthorizedHandler:(void(^)())authorizedHandler
+                                 unAuthorizedHandler:(void(^)())unAuthorizedHandler{
+    
+    EKAuthorizationStatus authStatus = [EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent];
+    if (authStatus == EKAuthorizationStatusNotDetermined) {
+        EKEventStore *eventStore = [[EKEventStore alloc] init];
+        [eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError * _Nullable error) {
+            if (granted) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    authorizedHandler ? authorizedHandler() : nil;
+                });
+            }else{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    unAuthorizedHandler ? unAuthorizedHandler() : nil;
+                });
+            }
+        }];
+    }else if (authStatus == EKAuthorizationStatusAuthorized){
+        authorizedHandler ? authorizedHandler() : nil;
+    }else{
+        unAuthorizedHandler ? unAuthorizedHandler() : nil;
+    }
+}
+
+#pragma mark - Reminder
+- (void)p_requestReminderAccessWithAuthorizedHandler:(void(^)())authorizedHandler
+                                 unAuthorizedHandler:(void(^)())unAuthorizedHandler{
+    EKAuthorizationStatus authStatus = [EKEventStore authorizationStatusForEntityType:EKEntityTypeReminder];
+    if (authStatus == EKAuthorizationStatusNotDetermined) {
+        EKEventStore *eventStore = [[EKEventStore alloc] init];
+        [eventStore requestAccessToEntityType:EKEntityTypeReminder completion:^(BOOL granted, NSError * _Nullable error) {
+            if (granted) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    authorizedHandler ? authorizedHandler() : nil;
+                });
+            }else{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    unAuthorizedHandler ? unAuthorizedHandler() : nil;
+                });
+            }
+        }];
+    }else if (authStatus == EKAuthorizationStatusAuthorized){
+        authorizedHandler ? authorizedHandler() : nil;
+    }else{
+        unAuthorizedHandler ? unAuthorizedHandler() : nil;
     }
 }
 

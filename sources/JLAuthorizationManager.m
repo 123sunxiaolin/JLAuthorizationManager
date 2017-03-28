@@ -15,6 +15,7 @@
 @import AddressBook;
 @import Contacts;
 @import EventKit;
+@import CoreLocation;
 
 #define IOS8 ([[[UIDevice currentDevice] systemVersion] doubleValue] >= 8.0)
 #define IOS9 ([[[UIDevice currentDevice] systemVersion] doubleValue] >= 9.0)
@@ -292,6 +293,11 @@
     }else{
         unAuthorizedHandler ? unAuthorizedHandler() : nil;
     }
+}
+
+#pragma mark - Map
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status{
+    
 }
 
 @end

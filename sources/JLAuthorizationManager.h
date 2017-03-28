@@ -10,31 +10,31 @@
 
 typedef NS_ENUM(NSInteger, JLAuthorizationType) {
     /**
-     *  相册
+     *  相册/PhotoLibrary
      */
     JLAuthorizationTypePhotoLibrary = 0,
     /**
-     *  网络
+     *  网络/Cellular Network
      */
     JLAuthorizationTypeNetWork,
     /**
-     *  相机
+     *  相机/Camera
      */
     JLAuthorizationTypeVideo,
     /**
-     *  麦克风
+     *  麦克风/Audio
      */
     JLAuthorizationTypeAudio,
     /**
-     *  通讯录
+     *  通讯录/AddressBook
      */
     JLAuthorizationTypeAddressBook,
     /**
-     *  日历
+     *  日历/Calendar
      */
     JLAuthorizationTypeCalendar,
     /**
-     *  备忘提醒
+     *  备忘提醒/Reminder
      */
     JLAuthorizationTypeReminder,
 };

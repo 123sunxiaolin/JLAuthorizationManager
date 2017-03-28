@@ -12,8 +12,11 @@
 @import AssetsLibrary;
 @import CoreTelephony;
 @import AVFoundation;
+@import AddressBook;
+@import Contacts;
 
 #define IOS8 ([[[UIDevice currentDevice] systemVersion] doubleValue] >= 8.0)
+#define IOS9 ([[[UIDevice currentDevice] systemVersion] doubleValue] >= 9.0)
 
 @implementation JLAuthorizationManager
 
@@ -44,6 +47,16 @@
             [self p_requestCameraAccessWithAuthorizedHandler:authorizedHandler
                                          unAuthorizedHandler:unAuthorizedHandler];
             break;
+            
+        case JLAuthorizationTypeAudio:
+            [self p_requestAudioAccessWithAuthorizedHandler:authorizedHandler
+                                        unAuthorizedHandler:unAuthorizedHandler];
+            break;
+        case JLAuthorizationTypeAddressBook:
+            [self p_requestAddressBookWithAuthorizedHandler:authorizedHandler
+                                        unAuthorizedHandler:unAuthorizedHandler];
+            break;
+            
             
         default:
             break;
@@ -76,12 +89,15 @@
         
     }else{
         //used `AssetsLibrary`
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         ALAuthorizationStatus authStatus = [ALAssetsLibrary authorizationStatus];
         if (authStatus == ALAuthorizationStatusAuthorized) {
             authorizedHandler ? authorizedHandler() : nil;
         }else{
             unAuthorizedHandler ? unAuthorizedHandler() : nil;
         }
+#pragma clang diagnostic pop
     }
 }
 
@@ -156,6 +172,67 @@
         authorizedHandler ? authorizedHandler() : nil;
     }else{
         unAuthorizedHandler ? unAuthorizedHandler() : nil;
+    }
+}
+
+#pragma mark - AddressBook
+- (void)p_requestAddressBookWithAuthorizedHandler:(void(^)())authorizedHandler
+                              unAuthorizedHandler:(void(^)())unAuthorizedHandler{
+    if (IOS9) {
+        
+        CNAuthorizationStatus authStatus = [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
+        if (authStatus == CNAuthorizationStatusNotDetermined) {
+            CNContactStore *contactStore = [[CNContactStore alloc] init];
+            [contactStore requestAccessForEntityType:CNEntityTypeContacts completionHandler:^(BOOL granted, NSError * _Nullable error) {
+                if (granted) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        authorizedHandler ? authorizedHandler() : nil;
+                    });
+                }else{
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        unAuthorizedHandler ? unAuthorizedHandler() : nil;
+                    });
+                }
+            }];
+        }else if (authStatus == CNAuthorizationStatusAuthorized){
+             authorizedHandler ? authorizedHandler() : nil;
+        }else{
+            unAuthorizedHandler ? unAuthorizedHandler() : nil;
+        }
+        
+        
+    }else{
+        //iOS9.0 eariler
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        
+        ABAuthorizationStatus authStatus = ABAddressBookGetAuthorizationStatus();
+        if (authStatus == kABAuthorizationStatusNotDetermined) {
+            ABAddressBookRef addressBook = ABAddressBookCreate();
+            ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
+                if (granted) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        authorizedHandler ? authorizedHandler() : nil;
+                    });
+                }else{
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        unAuthorizedHandler ? unAuthorizedHandler() : nil;
+                    });
+                }
+            });
+            
+            if (addressBook) {
+                CFRelease(addressBook);
+            }
+           
+        }else if (authStatus == kABAuthorizationStatusAuthorized){
+            authorizedHandler ? authorizedHandler() : nil;
+        }else{
+            unAuthorizedHandler ? unAuthorizedHandler() : nil;
+        }
+#pragma clang diagnostic pop
+        
     }
 }
 

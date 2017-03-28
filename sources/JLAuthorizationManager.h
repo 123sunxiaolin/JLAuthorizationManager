@@ -9,10 +9,34 @@
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSInteger, JLAuthorizationType) {
+    /**
+     *  相册
+     */
     JLAuthorizationTypePhotoLibrary = 0,
+    /**
+     *  网络
+     */
     JLAuthorizationTypeNetWork,
+    /**
+     *  相机
+     */
     JLAuthorizationTypeVideo,
-    JLAuthorizationTypeAudio
+    /**
+     *  麦克风
+     */
+    JLAuthorizationTypeAudio,
+    /**
+     *  通讯录
+     */
+    JLAuthorizationTypeAddressBook,
+    /**
+     *  日历
+     */
+    JLAuthorizationTypeCalendar,
+    /**
+     *  备忘提醒
+     */
+    JLAuthorizationTypeReminder,
 };
 
 @interface JLAuthorizationManager : NSObject

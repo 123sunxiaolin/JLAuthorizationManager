@@ -37,6 +37,14 @@ typedef NS_ENUM(NSInteger, JLAuthorizationType) {
      *  提醒事项/Reminder
      */
     JLAuthorizationTypeReminder,
+    /**
+     *  一直请求定位权限/AlwaysAuthorization
+     */
+    JLAuthorizationTypeMapAlways,
+    /**
+     *  使用时请求定位权限/WhenInUseAuthorization
+     */
+    JLAuthorizationTypeMapWhenInUse,
 };
 
 @interface JLAuthorizationManager : NSObject

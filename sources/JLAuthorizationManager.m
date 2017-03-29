@@ -20,6 +20,14 @@
 #define IOS8 ([[[UIDevice currentDevice] systemVersion] doubleValue] >= 8.0)
 #define IOS9 ([[[UIDevice currentDevice] systemVersion] doubleValue] >= 9.0)
 
+@interface JLAuthorizationManager ()
+@property (nonatomic, copy) void (^mapAlwaysAuthorizedHandler)();
+@property (nonatomic, copy) void (^mapAlwaysUnAuthorizedHandler)();
+@property (nonatomic, copy) void (^mapWhenInUseAuthorizedHandler)();
+@property (nonatomic, copy) void (^mapWhenInUseUnAuthorizedHandler)();
+
+@property (nonatomic, assign) BOOL isRequestMapAlways;
+@end
 @implementation JLAuthorizationManager
 
 + (JLAuthorizationManager *)defaultManager{
@@ -29,6 +37,13 @@
         authorizationManager = [[JLAuthorizationManager alloc] init];
     });
     return authorizationManager;
+}
+
+- (instancetype)init{
+    if (self = [super init]) {
+        _isRequestMapAlways = NO;
+    }
+    return self;
 }
 
 - (void)JL_requestAuthorizationWithAuthorizationType:(JLAuthorizationType)authorizationType
@@ -66,6 +81,15 @@
             [self p_requestReminderAccessWithAuthorizedHandler:authorizedHandler
                                            unAuthorizedHandler:unAuthorizedHandler];
             break;
+        case JLAuthorizationTypeMapAlways:
+            [self p_requestMapAlwaysAccessWithAuthorizedHandler:authorizedHandler
+                                            unAuthorizedHandler:unAuthorizedHandler];
+            break;
+        case JLAuthorizationTypeMapWhenInUse:
+            [self p_requestMapWhenInUseAccessWithAuthorizedHandler:authorizedHandler
+                                               unAuthorizedHandler:unAuthorizedHandler];
+            break;
+            
             
             
         default:
@@ -296,8 +320,56 @@
 }
 
 #pragma mark - Map
+
+- (void)p_requestMapAlwaysAccessWithAuthorizedHandler:(void(^)())authorizedHandler
+                                  unAuthorizedHandler:(void(^)())unAuthorizedHandler{
+    CLAuthorizationStatus authStatus = [CLLocationManager authorizationStatus];
+    if (authStatus == kCLAuthorizationStatusNotDetermined) {
+        
+        self.mapAlwaysAuthorizedHandler = authorizedHandler;
+        self.mapAlwaysUnAuthorizedHandler = unAuthorizedHandler;
+        CLLocationManager *manager = [[CLLocationManager alloc] init];
+        [manager requestAlwaysAuthorization];
+        self.isRequestMapAlways = YES;
+        
+    }else if (authStatus == kCLAuthorizationStatusAuthorizedAlways){
+        authorizedHandler ? authorizedHandler() : nil;
+    }else{
+        unAuthorizedHandler ? unAuthorizedHandler() : nil;
+    }
+}
+
+- (void)p_requestMapWhenInUseAccessWithAuthorizedHandler:(void(^)())authorizedHandler
+                                     unAuthorizedHandler:(void(^)())unAuthorizedHandler{
+    CLAuthorizationStatus authStatus = [CLLocationManager authorizationStatus];
+    if (authStatus == kCLAuthorizationStatusNotDetermined) {
+        
+        self.mapWhenInUseAuthorizedHandler = authorizedHandler;
+        self.mapAlwaysUnAuthorizedHandler = unAuthorizedHandler;
+        CLLocationManager *manager = [[CLLocationManager alloc] init];
+        [manager requestWhenInUseAuthorization];
+        self.isRequestMapAlways = NO;
+        
+    }else if (authStatus == kCLAuthorizationStatusAuthorizedWhenInUse){
+        authorizedHandler ? authorizedHandler() : nil;
+    }else{
+        unAuthorizedHandler ? unAuthorizedHandler() : nil;
+    }
+}
+
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status{
     
+    if (status == kCLAuthorizationStatusAuthorizedAlways) {
+        self.mapAlwaysAuthorizedHandler ? self.mapAlwaysAuthorizedHandler() : nil;
+    }else if (status == kCLAuthorizationStatusAuthorizedWhenInUse){
+        self.mapWhenInUseAuthorizedHandler ? self.mapWhenInUseAuthorizedHandler() : nil;
+    }else{
+        if (self.isRequestMapAlways) {
+            self.mapAlwaysUnAuthorizedHandler ? self.mapAlwaysUnAuthorizedHandler() : nil;
+        }else{
+             self.mapWhenInUseUnAuthorizedHandler ? self.mapWhenInUseUnAuthorizedHandler() : nil;
+        }
+    }
 }
 
 @end

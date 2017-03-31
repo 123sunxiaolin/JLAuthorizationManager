@@ -445,7 +445,7 @@
 				CODE_SIGN_ENTITLEMENTS = JLAuthorizationDemo/JLAuthorizationDemo.entitlements;
 				DEVELOPMENT_TEAM = H9ZBM36KF6;
 				INFOPLIST_FILE = JLAuthorizationDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jack.lin.JLAuthorizationDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -459,7 +459,7 @@
 				CODE_SIGN_ENTITLEMENTS = JLAuthorizationDemo/JLAuthorizationDemo.entitlements;
 				DEVELOPMENT_TEAM = H9ZBM36KF6;
 				INFOPLIST_FILE = JLAuthorizationDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jack.lin.JLAuthorizationDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";

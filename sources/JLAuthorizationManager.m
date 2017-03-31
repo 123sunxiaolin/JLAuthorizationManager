@@ -16,15 +16,28 @@
 @import Contacts;
 @import EventKit;
 @import CoreLocation;
+@import MediaPlayer;
+@import Speech;
+@import HealthKit;
+//@import CoreBluetooth;
+//@import HomeKit;
+@import Intents;
 
 #define IOS8 ([[[UIDevice currentDevice] systemVersion] doubleValue] >= 8.0)
 #define IOS9 ([[[UIDevice currentDevice] systemVersion] doubleValue] >= 9.0)
+#define IOS10 ([[[UIDevice currentDevice] systemVersion] doubleValue] >= 10.0)
 
-@interface JLAuthorizationManager ()
+@interface JLAuthorizationManager ()<CLLocationManagerDelegate>
+
 @property (nonatomic, copy) void (^mapAlwaysAuthorizedHandler)();
 @property (nonatomic, copy) void (^mapAlwaysUnAuthorizedHandler)();
 @property (nonatomic, copy) void (^mapWhenInUseAuthorizedHandler)();
 @property (nonatomic, copy) void (^mapWhenInUseUnAuthorizedHandler)();
+
+/**
+ 地理位置管理对象
+ */
+@property (nonatomic, strong) CLLocationManager *locationManager;
 
 @property (nonatomic, assign) BOOL isRequestMapAlways;
 @end
@@ -89,10 +102,21 @@
             [self p_requestMapWhenInUseAccessWithAuthorizedHandler:authorizedHandler
                                                unAuthorizedHandler:unAuthorizedHandler];
             break;
-            
-            
+        case JLAuthorizationTypeAppleMusic:
+            [self p_requestAppleMusicAccessWithAuthorizedHandler:authorizedHandler
+                                             unAuthorizedHandler:unAuthorizedHandler];
+            break;
+        case JLAuthorizationTypeSpeechRecognizer:
+            [self p_requestSpeechRecognizerAccessWithAuthorizedHandler:authorizedHandler
+                                                   unAuthorizedHandler:unAuthorizedHandler];
+            break;
+        case JLAuthorizationTypeSiri:
+            [self p_requestSiriAccessWithAuthorizedHandler:authorizedHandler
+                                       unAuthorizedHandler:unAuthorizedHandler];
+            break;
             
         default:
+            
             break;
     }
 }
@@ -323,13 +347,21 @@
 
 - (void)p_requestMapAlwaysAccessWithAuthorizedHandler:(void(^)())authorizedHandler
                                   unAuthorizedHandler:(void(^)())unAuthorizedHandler{
+    if (![CLLocationManager locationServicesEnabled]) {
+        NSAssert(![CLLocationManager locationServicesEnabled], @"Location service enabled failed");
+        return;
+    }
+    if (!self.locationManager) {
+        self.locationManager = [[CLLocationManager alloc] init];
+        self.locationManager.delegate = self;
+    }
+    
     CLAuthorizationStatus authStatus = [CLLocationManager authorizationStatus];
     if (authStatus == kCLAuthorizationStatusNotDetermined) {
         
         self.mapAlwaysAuthorizedHandler = authorizedHandler;
         self.mapAlwaysUnAuthorizedHandler = unAuthorizedHandler;
-        CLLocationManager *manager = [[CLLocationManager alloc] init];
-        [manager requestAlwaysAuthorization];
+        [self.locationManager requestAlwaysAuthorization];
         self.isRequestMapAlways = YES;
         
     }else if (authStatus == kCLAuthorizationStatusAuthorizedAlways){
@@ -341,13 +373,20 @@
 
 - (void)p_requestMapWhenInUseAccessWithAuthorizedHandler:(void(^)())authorizedHandler
                                      unAuthorizedHandler:(void(^)())unAuthorizedHandler{
+    if (![CLLocationManager locationServicesEnabled]) {
+        NSAssert(![CLLocationManager locationServicesEnabled], @"Location service enabled failed");
+        return;
+    }
+    if (!self.locationManager) {
+        self.locationManager = [[CLLocationManager alloc] init];
+        self.locationManager.delegate = self;
+    }
     CLAuthorizationStatus authStatus = [CLLocationManager authorizationStatus];
     if (authStatus == kCLAuthorizationStatusNotDetermined) {
         
         self.mapWhenInUseAuthorizedHandler = authorizedHandler;
         self.mapAlwaysUnAuthorizedHandler = unAuthorizedHandler;
-        CLLocationManager *manager = [[CLLocationManager alloc] init];
-        [manager requestWhenInUseAuthorization];
+        [self.locationManager requestWhenInUseAuthorization];
         self.isRequestMapAlways = NO;
         
     }else if (authStatus == kCLAuthorizationStatusAuthorizedWhenInUse){
@@ -356,7 +395,91 @@
         unAuthorizedHandler ? unAuthorizedHandler() : nil;
     }
 }
+#pragma mark - Apple Music
+- (void)p_requestAppleMusicAccessWithAuthorizedHandler:(void(^)())authorizedHandler
+                                   unAuthorizedHandler:(void(^)())unAuthorizedHandler{
+    MPMediaLibraryAuthorizationStatus authStatus = [MPMediaLibrary authorizationStatus];
+    if (authStatus == MPMediaLibraryAuthorizationStatusNotDetermined) {
+        [MPMediaLibrary requestAuthorization:^(MPMediaLibraryAuthorizationStatus status) {
+            if (status == MPMediaLibraryAuthorizationStatusAuthorized) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    authorizedHandler ? authorizedHandler() : nil;
+                });
+            }else{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    unAuthorizedHandler ? unAuthorizedHandler() : nil;
+                });
+            }
+        }];
+    }else if (authStatus == MPMediaLibraryAuthorizationStatusAuthorized){
+         authorizedHandler ? authorizedHandler() : nil;
+    }else{
+        unAuthorizedHandler ? unAuthorizedHandler() : nil;
+    }
+}
 
+#pragma mark - SpeechRecognizer
+- (void)p_requestSpeechRecognizerAccessWithAuthorizedHandler:(void(^)())authorizedHandler
+                                         unAuthorizedHandler:(void(^)())unAuthorizedHandler{
+    
+    SFSpeechRecognizerAuthorizationStatus authStatus = [SFSpeechRecognizer authorizationStatus];
+    if (authStatus == SFSpeechRecognizerAuthorizationStatusNotDetermined) {
+        [SFSpeechRecognizer requestAuthorization:^(SFSpeechRecognizerAuthorizationStatus status) {
+            if (status == SFSpeechRecognizerAuthorizationStatusAuthorized) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    authorizedHandler ? authorizedHandler() : nil;
+                });
+            }else{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    unAuthorizedHandler ? unAuthorizedHandler() : nil;
+                });
+            }
+        }];
+        
+    }else if (authStatus == SFSpeechRecognizerAuthorizationStatusAuthorized){
+        authorizedHandler ? authorizedHandler() : nil;
+    }else{
+        unAuthorizedHandler ? unAuthorizedHandler() : nil;
+    }
+}
+
+#pragma mark - Health
+- (void)p_requestHealthAccessWithAuthorizedHandler:(void(^)())authorizedHandler
+                               unAuthorizedHandler:(void(^)())unAuthorizedHandler{
+    
+}
+#pragma mark - Siri
+- (void)p_requestSiriAccessWithAuthorizedHandler:(void(^)())authorizedHandler
+                             unAuthorizedHandler:(void(^)())unAuthorizedHandler{
+    if (!IOS10) {
+        NSAssert(!IOS10, @"This method must used in iOS 10.0 or later/该方法必须在iOS10.0或以上版本使用");
+        authorizedHandler = nil;
+        unAuthorizedHandler = nil;
+        return;
+    }
+    
+    INSiriAuthorizationStatus authStatus = [INPreferences siriAuthorizationStatus];
+    if (authStatus == INSiriAuthorizationStatusNotDetermined) {
+        [INPreferences requestSiriAuthorization:^(INSiriAuthorizationStatus status) {
+            if (status == INSiriAuthorizationStatusAuthorized) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                     authorizedHandler ? authorizedHandler() : nil;
+                });
+            }else{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    unAuthorizedHandler ? unAuthorizedHandler() : nil;
+                });
+            }
+        }];
+        
+    }else if (authStatus == INSiriAuthorizationStatusAuthorized){
+        authorizedHandler ? authorizedHandler() : nil;
+    }else{
+        unAuthorizedHandler ? unAuthorizedHandler() : nil;
+    }
+}
+
+#pragma mark - CLLocationManagerDelegate
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status{
     
     if (status == kCLAuthorizationStatusAuthorizedAlways) {

@@ -45,6 +45,18 @@ typedef NS_ENUM(NSInteger, JLAuthorizationType) {
      *  使用时请求定位权限/WhenInUseAuthorization
      */
     JLAuthorizationTypeMapWhenInUse,
+    /**
+     *  媒体资料库/AppleMusic
+     */
+    JLAuthorizationTypeAppleMusic,
+    /**
+     *  语音识别/SpeechRecognizer
+     */
+    JLAuthorizationTypeSpeechRecognizer,
+    /**
+     *  Siri(must in iOS10 or later)
+     */
+    JLAuthorizationTypeSiri,
 };
 
 @interface JLAuthorizationManager : NSObject

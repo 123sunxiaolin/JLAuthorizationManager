@@ -1,9 +1,13 @@
 //
 //  JLAuthorizationManager.h
-//  JLUtilsDemo
+//  JLAuthorizationManager<https://github.com/123sunxiaolin/JLAuthorizationManager.git>
 //
-//  Created by perfect on 2017/3/27.
+//  <Wechat Public:iOSDevSkills>
+//  Created by Jacklin on 2017/3/27.
 //  Copyright © 2017年 com.jack.lin. All rights reserved.
+//
+//  This source code is licensed under the MIT-style license found in the
+//  LICENSE file in the root directory of this source tree.
 //
 
 #import <Foundation/Foundation.h>

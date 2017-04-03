@@ -1,9 +1,13 @@
 //
 //  JLAuthorizationManager.m
-//  JLUtilsDemo
+//  JLAuthorizationManager<https://github.com/123sunxiaolin/JLAuthorizationManager.git>
 //
-//  Created by perfect on 2017/3/27.
+//  <Wechat Public:iOSDevSkills>
+//  Created by Jacklin on 2017/3/27.
 //  Copyright © 2017年 com.jack.lin. All rights reserved.
+//
+//  This source code is licensed under the MIT-style license found in the
+//  LICENSE file in the root directory of this source tree.
 //
 
 #import "JLAuthorizationManager.h"
@@ -17,7 +21,7 @@
 @import EventKit;
 @import CoreLocation;
 @import MediaPlayer;
-@import Speech;
+@import Speech;//Xcode 8.0 or later
 @import HealthKit;
 @import Intents;
 @import CoreBluetooth;
@@ -537,7 +541,7 @@
 - (void)p_requestSpeechRecognizerAccessWithAuthorizedHandler:(void(^)())authorizedHandler
                                          unAuthorizedHandler:(void(^)())unAuthorizedHandler{
     
-    SFSpeechRecognizerAuthorizationStatus authStatus = [SFSpeechRecognizer authorizationStatus];
+    /*SFSpeechRecognizerAuthorizationStatus authStatus = [SFSpeechRecognizer authorizationStatus];
     if (authStatus == SFSpeechRecognizerAuthorizationStatusNotDetermined) {
         [SFSpeechRecognizer requestAuthorization:^(SFSpeechRecognizerAuthorizationStatus status) {
             if (status == SFSpeechRecognizerAuthorizationStatusAuthorized) {
@@ -555,7 +559,7 @@
         authorizedHandler ? authorizedHandler() : nil;
     }else{
         unAuthorizedHandler ? unAuthorizedHandler() : nil;
-    }
+    }*/
 }
 
 #pragma mark - Health

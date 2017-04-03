@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		C97E09771E8E6C3900C3F70D /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C97E09761E8E6C3900C3F70D /* MapKit.framework */; };
 		C97E09791E8F548000C3F70D /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C97E09781E8F548000C3F70D /* HealthKit.framework */; };
+		DD23452A1E91F39200F5B58D /* JLAuthorizationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2345281E91F39200F5B58D /* JLAuthorizationManager.m */; };
 		DDC8DDC51E895F7E001ADD47 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC8DDC41E895F7E001ADD47 /* main.m */; };
 		DDC8DDC81E895F7E001ADD47 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC8DDC71E895F7E001ADD47 /* AppDelegate.m */; };
 		DDC8DDCB1E895F7E001ADD47 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC8DDCA1E895F7E001ADD47 /* ViewController.m */; };
@@ -17,7 +18,6 @@
 		DDC8DDD31E895F7E001ADD47 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DDC8DDD11E895F7E001ADD47 /* LaunchScreen.storyboard */; };
 		DDC8DDDE1E895F7E001ADD47 /* JLAuthorizationDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC8DDDD1E895F7E001ADD47 /* JLAuthorizationDemoTests.m */; };
 		DDC8DDE91E895F7E001ADD47 /* JLAuthorizationDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC8DDE81E895F7E001ADD47 /* JLAuthorizationDemoUITests.m */; };
-		DDC8DDF81E896027001ADD47 /* JLAuthorizationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC8DDF61E896027001ADD47 /* JLAuthorizationManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +41,8 @@
 		C97E09741E8E6BFE00C3F70D /* JLAuthorizationDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = JLAuthorizationDemo.entitlements; sourceTree = "<group>"; };
 		C97E09761E8E6C3900C3F70D /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		C97E09781E8F548000C3F70D /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		DD2345281E91F39200F5B58D /* JLAuthorizationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JLAuthorizationManager.m; path = ../../JLAuthorizationManager/JLAuthorizationManager.m; sourceTree = "<group>"; };
+		DD2345291E91F39200F5B58D /* JLAuthorizationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JLAuthorizationManager.h; path = ../../JLAuthorizationManager/JLAuthorizationManager.h; sourceTree = "<group>"; };
 		DDC8DDC01E895F7E001ADD47 /* JLAuthorizationDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JLAuthorizationDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDC8DDC41E895F7E001ADD47 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		DDC8DDC61E895F7E001ADD47 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -57,8 +59,6 @@
 		DDC8DDE41E895F7E001ADD47 /* JLAuthorizationDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JLAuthorizationDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDC8DDE81E895F7E001ADD47 /* JLAuthorizationDemoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JLAuthorizationDemoUITests.m; sourceTree = "<group>"; };
 		DDC8DDEA1E895F7E001ADD47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DDC8DDF61E896027001ADD47 /* JLAuthorizationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JLAuthorizationManager.m; path = ../../sources/JLAuthorizationManager.m; sourceTree = "<group>"; };
-		DDC8DDF71E896027001ADD47 /* JLAuthorizationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JLAuthorizationManager.h; path = ../../sources/JLAuthorizationManager.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +97,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		DD2345271E91F0A800F5B58D /* JLAuthorizationManager */ = {
+			isa = PBXGroup;
+			children = (
+				DD2345291E91F39200F5B58D /* JLAuthorizationManager.h */,
+				DD2345281E91F39200F5B58D /* JLAuthorizationManager.m */,
+			);
+			name = JLAuthorizationManager;
+			sourceTree = "<group>";
+		};
 		DDC8DDB71E895F7D001ADD47 = {
 			isa = PBXGroup;
 			children = (
@@ -121,9 +130,8 @@
 		DDC8DDC21E895F7E001ADD47 /* JLAuthorizationDemo */ = {
 			isa = PBXGroup;
 			children = (
+				DD2345271E91F0A800F5B58D /* JLAuthorizationManager */,
 				C97E09741E8E6BFE00C3F70D /* JLAuthorizationDemo.entitlements */,
-				DDC8DDF71E896027001ADD47 /* JLAuthorizationManager.h */,
-				DDC8DDF61E896027001ADD47 /* JLAuthorizationManager.m */,
 				DDC8DDC61E895F7E001ADD47 /* AppDelegate.h */,
 				DDC8DDC71E895F7E001ADD47 /* AppDelegate.m */,
 				DDC8DDC91E895F7E001ADD47 /* ViewController.h */,
@@ -306,8 +314,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				DDC8DDCB1E895F7E001ADD47 /* ViewController.m in Sources */,
-				DDC8DDF81E896027001ADD47 /* JLAuthorizationManager.m in Sources */,
 				DDC8DDC81E895F7E001ADD47 /* AppDelegate.m in Sources */,
+				DD23452A1E91F39200F5B58D /* JLAuthorizationManager.m in Sources */,
 				DDC8DDC51E895F7E001ADD47 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

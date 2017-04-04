@@ -541,7 +541,7 @@
 - (void)p_requestSpeechRecognizerAccessWithAuthorizedHandler:(void(^)())authorizedHandler
                                          unAuthorizedHandler:(void(^)())unAuthorizedHandler{
     
-    /*SFSpeechRecognizerAuthorizationStatus authStatus = [SFSpeechRecognizer authorizationStatus];
+    SFSpeechRecognizerAuthorizationStatus authStatus = [SFSpeechRecognizer authorizationStatus];
     if (authStatus == SFSpeechRecognizerAuthorizationStatusNotDetermined) {
         [SFSpeechRecognizer requestAuthorization:^(SFSpeechRecognizerAuthorizationStatus status) {
             if (status == SFSpeechRecognizerAuthorizationStatusAuthorized) {
@@ -559,7 +559,7 @@
         authorizedHandler ? authorizedHandler() : nil;
     }else{
         unAuthorizedHandler ? unAuthorizedHandler() : nil;
-    }*/
+    }
 }
 
 #pragma mark - Health

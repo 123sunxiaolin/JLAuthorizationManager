@@ -9,7 +9,7 @@ JLAuthorizationManager
 Getting Started
 ------------
 
-###1、Most Authorization Access Method
+### 1、Most Authorization Access Method
 First, import header file:`#import "JLAuthorizationManager.h"`<br>
 
 then,using method:
@@ -47,7 +47,7 @@ Implementation method for one example as follows:
 ```
 > **Notes**:Call before use `[JLAuthorizationManager defaultManager]`.
 
-###2、Special Authorization Access Method for HealthKit
+### 2、Special Authorization Access Method for HealthKit
 
 When you want to use `HealthKit` authorization , please use other method as follows:
 
@@ -113,7 +113,7 @@ Tips and Tricks
 ---------------
 
 - **Don't** forget add authorization Description in `info.plist`.
-- if you want to use `HealthKit` or `Siri`,please open switch on `Capabilities`.
+- if you want to use `HealthKit` or `Siri`,please open switch on `Capabilities`,then system create `xx..entitlements` file automatically.
 - if not find more, please refer to `JLAuthorizationDemo`.
 
 License

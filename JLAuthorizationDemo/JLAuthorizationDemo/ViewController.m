@@ -53,44 +53,6 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    if ([HKHealthStore isHealthDataAvailable]) {
-        NSLog(@"support Motion");
-    }
-//    HKHealthStore *healthStore = [[HKHealthStore alloc] init];
-//    HKObjectType *type = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierDistanceWalkingRunning];
-//    HKObjectType *type1 = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierStepCount];
-//    HKAuthorizationStatus authStatus = [healthStore authorizationStatusForType:type];
-//    if (authStatus == HKAuthorizationStatusNotDetermined) {
-//        /*[healthStore handleAuthorizationForExtensionWithCompletion:^(BOOL success, NSError * _Nullable error) {
-//            if (success) {
-//                NSLog(@"thread:%@", [NSThread currentThread]);
-//            }else{
-//                NSLog(@"thread:%@", [NSThread currentThread]);
-//                NSLog(@"789");
-//                if (error) {
-//                }
-//            }
-//            
-//
-//        }];*/
-//        [healthStore requestAuthorizationToShareTypes:[NSSet setWithObjects:type, type1, nil] readTypes:[NSSet setWithObjects:type, type1, nil]completion:^(BOOL success, NSError * _Nullable error) {
-//            if (success) {
-//                NSLog(@"thread:%@", [NSThread currentThread]);
-//            }else{
-//                NSLog(@"thread:%@", [NSThread currentThread]);
-//                NSLog(@"789");
-//                if (error) {
-//                    NSLog(@"error:%@", error.description);
-//                }
-//            }
-//                    }];
-//    }else if (authStatus == HKAuthorizationStatusSharingAuthorized){
-//        NSLog(@"456");
-//    }else{
-//        NSLog(@"123");
-//    }
-    
-    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -236,24 +198,6 @@
         }
             break;
         case 12:{
-//            HKHealthStore *healthStore = [[HKHealthStore alloc] init];
-//            HKObjectType *type = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierDistanceWalkingRunning];
-//            HKAuthorizationStatus authStatus = [healthStore authorizationStatusForType:type];
-//            if (authStatus == HKAuthorizationStatusNotDetermined) {
-//                [healthStore handleAuthorizationForExtensionWithCompletion:^(BOOL success, NSError * _Nullable error) {
-//                    if (success) {
-//                        NSLog(@"thread:%@", [NSThread currentThread]);
-//                    }else{
-//                        NSLog(@"thread:%@", [NSThread currentThread]);
-//                        NSLog(@"789");
-//                        if (error) {
-//                            NSLog(@"error:%@", error.description);
-//                        }
-//                    }
-//                    
-//                    
-//                }];
-//            }
             HKObjectType *type = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierDistanceWalkingRunning];
             HKObjectType *type1 = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierStepCount];
             NSSet *shareSet = [NSSet setWithObjects:type, type1, nil];

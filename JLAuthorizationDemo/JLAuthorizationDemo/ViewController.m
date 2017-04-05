@@ -68,7 +68,6 @@
 //                NSLog(@"thread:%@", [NSThread currentThread]);
 //                NSLog(@"789");
 //                if (error) {
-//                    NSLog(@"error:%@", error.description);
 //                }
 //            }
 //            

@@ -64,7 +64,24 @@ typedef NS_ENUM(NSInteger, JLAuthorizationType) {
     /**
      *  蓝牙共享/Bluetooth
      */
-    JLAuthorizationTypeBluetooth
+    JLAuthorizationTypeBluetooth,
+    /**
+     *  推特/Twitter
+     */
+    JLAuthorizationTypeTwitter,
+    /**
+     *  脸书/Facebook
+     */
+    JLAuthorizationTypeFacebook,
+    /**
+     *  新浪微博/SinaWeibo
+     */
+    JLAuthorizationTypeSinaWeibo,
+    /**
+     *  腾讯微博/TencentWeibo
+     */
+    JLAuthorizationTypeTencentWeibo,
+    
 };
 
 @interface JLAuthorizationManager : NSObject
@@ -94,4 +111,18 @@ typedef NS_ENUM(NSInteger, JLAuthorizationType) {
                                           readTypes:(NSSet*)typesToRead
                                   authorizedHandler:(void(^)())authorizedHandler
                                 unAuthorizedHandler:(void(^)())unAuthorizedHandler;
+/**
+  请求社交账号访问权限
+
+ @param authorizationType 权限类型
+ @param options 请求账号时需要的配置信息(Facebook 和 腾讯微博不能为空)
+ @param authorizedHandler 授权后的回调
+ @param unAuthorizedHandler 未授权的回调
+ @param errorHandler 产生错误的回调
+ */
+- (void)JL_requestAccountAuthorizationWithAuthorizationType:(JLAuthorizationType)authorizationType
+                                                    options:(NSDictionary *)options
+                                          authorizedHandler:(void(^)())authorizedHandler
+                                        unAuthorizedHandler:(void(^)())unAuthorizedHandler
+                                               errorHandler:(void(^)(NSError *error))errorHandler;
 @end

@@ -25,6 +25,7 @@
 @import HealthKit;
 @import Intents;
 @import CoreBluetooth;
+@import Accounts;
 
 #define IOS8 ([[[UIDevice currentDevice] systemVersion] doubleValue] >= 8.0)
 #define IOS9 ([[[UIDevice currentDevice] systemVersion] doubleValue] >= 9.0)
@@ -45,6 +46,9 @@
                                   authorizedHandler:(void(^)())authorizedHandler
                                 unAuthorizedHandler:(void(^)())unAuthorizedHandler{
 
+    BOOL isSupportHealthKit = [HKHealthStore isHealthDataAvailable];
+    NSAssert(isSupportHealthKit, @"Notice it is not support HealthKit!");
+    
     HKHealthStore *healthStore = [[HKHealthStore alloc] init];
    __block BOOL shouldRequestAccess = NO;
     if (typesToShare.count > 0) {
@@ -70,7 +74,7 @@
             
             
         }else{
-            NSAssert(!(typesToRead.count > 0), @"待请求的权限类型数组不能为空");
+            NSAssert(typesToRead.count > 0, @"待请求的权限类型数组不能为空");
         }
     }
     
@@ -112,7 +116,7 @@
                 }];
                 
             }else{
-                NSAssert(!(typesToRead.count > 0), @"待请求的权限类型数组不能为空");
+                NSAssert(typesToRead.count > 0, @"待请求的权限类型数组不能为空");
             }
         }
         
@@ -138,7 +142,7 @@
  地理位置管理对象
  */
 @property (nonatomic, strong) CLLocationManager *locationManager;
-
+@property (nonatomic, strong) ACAccountStore *accounStore;
 @property (nonatomic, assign) BOOL isRequestMapAlways;
 @end
 @implementation JLAuthorizationManager
@@ -157,6 +161,13 @@
         _isRequestMapAlways = NO;
     }
     return self;
+}
+
+- (ACAccountStore *)accounStore{
+    if (!_accounStore) {
+        _accounStore = [[ACAccountStore alloc] init];
+    }
+    return _accounStore;
 }
 
 - (void)JL_requestAuthorizationWithAuthorizationType:(JLAuthorizationType)authorizationType
@@ -238,6 +249,46 @@
                                            unAuthorizedHandler:unAuthorizedHandler];
     
     
+}
+
+- (void)JL_requestAccountAuthorizationWithAuthorizationType:(JLAuthorizationType)authorizationType
+                                                    options:(NSDictionary *)options
+                                          authorizedHandler:(void(^)())authorizedHandler
+                                        unAuthorizedHandler:(void(^)())unAuthorizedHandler
+                                               errorHandler:(void(^)(NSError *error))errorHandler{
+    switch (authorizationType) {
+        case JLAuthorizationTypeTwitter:
+            [self p_requestAccountWithaccountTypeIndentifier:ACAccountTypeIdentifierTwitter
+                                                     options:options
+                                           authorizedHandler:authorizedHandler
+                                         unAuthorizedHandler:unAuthorizedHandler
+                                                errorHandler:errorHandler];
+            break;
+        case JLAuthorizationTypeFacebook:
+            [self p_requestAccountWithaccountTypeIndentifier:ACAccountTypeIdentifierFacebook
+                                                     options:options
+                                           authorizedHandler:authorizedHandler
+                                         unAuthorizedHandler:unAuthorizedHandler
+                                                errorHandler:errorHandler];
+            break;
+        case JLAuthorizationTypeSinaWeibo:
+            [self p_requestAccountWithaccountTypeIndentifier:ACAccountTypeIdentifierSinaWeibo
+                                                     options:options
+                                           authorizedHandler:authorizedHandler
+                                         unAuthorizedHandler:unAuthorizedHandler
+                                                errorHandler:errorHandler];
+            break;
+        case JLAuthorizationTypeTencentWeibo:
+            [self p_requestAccountWithaccountTypeIndentifier:ACAccountTypeIdentifierTencentWeibo
+                                                     options:options
+                                           authorizedHandler:authorizedHandler
+                                         unAuthorizedHandler:unAuthorizedHandler
+                                                errorHandler:errorHandler];
+            break;
+            
+        default:
+            break;
+    }
 }
 
 #pragma mark - Photo Library
@@ -467,7 +518,7 @@
 - (void)p_requestMapAlwaysAccessWithAuthorizedHandler:(void(^)())authorizedHandler
                                   unAuthorizedHandler:(void(^)())unAuthorizedHandler{
     if (![CLLocationManager locationServicesEnabled]) {
-        NSAssert(![CLLocationManager locationServicesEnabled], @"Location service enabled failed");
+        NSAssert([CLLocationManager locationServicesEnabled], @"Location service enabled failed");
         return;
     }
     if (!self.locationManager) {
@@ -493,7 +544,7 @@
 - (void)p_requestMapWhenInUseAccessWithAuthorizedHandler:(void(^)())authorizedHandler
                                      unAuthorizedHandler:(void(^)())unAuthorizedHandler{
     if (![CLLocationManager locationServicesEnabled]) {
-        NSAssert(![CLLocationManager locationServicesEnabled], @"Location service enabled failed");
+        NSAssert([CLLocationManager locationServicesEnabled], @"Location service enabled failed");
         return;
     }
     if (!self.locationManager) {
@@ -570,7 +621,7 @@
 - (void)p_requestSiriAccessWithAuthorizedHandler:(void(^)())authorizedHandler
                              unAuthorizedHandler:(void(^)())unAuthorizedHandler{
     if (!IOS10) {
-        NSAssert(!IOS10, @"This method must used in iOS 10.0 or later/该方法必须在iOS10.0或以上版本使用");
+        NSAssert(IOS10, @"This method must used in iOS 10.0 or later/该方法必须在iOS10.0或以上版本使用");
         authorizedHandler = nil;
         unAuthorizedHandler = nil;
         return;
@@ -601,11 +652,49 @@
 - (void)p_requestBluetoothAccessWithAuthorizedHandler:(void(^)())authorizedHandler
                                   unAuthorizedHandler:(void(^)())unAuthorizedHandler{
     CBPeripheralManagerAuthorizationStatus authStatus = [CBPeripheralManager authorizationStatus];
-    if (authStatus == CBPeripheralManagerAuthorizationStatusAuthorized) {
+    if (authStatus == CBPeripheralManagerAuthorizationStatusNotDetermined) {
+        
+        CBCentralManager *cbManager = [[CBCentralManager alloc] init];
+        [cbManager scanForPeripheralsWithServices:nil
+                                          options:nil];
+        
+    }else if (authStatus == CBPeripheralManagerAuthorizationStatusAuthorized) {
         authorizedHandler ? authorizedHandler() : nil;
     }else{
         unAuthorizedHandler ? unAuthorizedHandler() : nil;
     }
+}
+
+#pragma mark - Account
+- (void)p_requestAccountWithaccountTypeIndentifier:(NSString *)typeIndentifier
+                                           options:(NSDictionary *)options
+                                 authorizedHandler:(void(^)())authorizedHandler
+                               unAuthorizedHandler:(void(^)())unAuthorizedHandler
+                                      errorHandler:(void(^)(NSError *error))errorHandler{
+    
+    ACAccountType *accountType = [self.accounStore accountTypeWithAccountTypeIdentifier:typeIndentifier];
+    if ([accountType accessGranted]) {
+        authorizedHandler ? authorizedHandler() : nil;
+    }else{
+        if ([typeIndentifier isEqualToString:ACAccountTypeIdentifierFacebook]
+            || [typeIndentifier isEqualToString:ACAccountTypeIdentifierTencentWeibo]) {
+            NSAssert(options, @"Option can't be nil!");
+        }
+        [self.accounStore requestAccessToAccountsWithType:accountType options:options completion:^(BOOL granted, NSError *error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (granted) {
+                    authorizedHandler ? authorizedHandler() : nil;
+                }else{
+                    if (error) {
+                        errorHandler ? errorHandler(error) : nil;
+                    }else{
+                        unAuthorizedHandler ? unAuthorizedHandler() : nil;
+                    }
+                }
+            });
+        }];
+    }
+    
 }
 
 #pragma mark - CLLocationManagerDelegate

@@ -56,6 +56,10 @@
 	<string>App需要您的同意,才能在使用Siri助手</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>App需要您的同意,才能在使用语音识别</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>App需要您的同意,才能在使用蓝牙共享</string>
+	<key>NSMotionUsageDescription</key>
+	<string>App需要您的同意,才能在使用活动与体能训练记录</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

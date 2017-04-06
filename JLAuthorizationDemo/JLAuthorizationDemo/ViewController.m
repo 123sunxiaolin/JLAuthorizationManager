@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "JLAuthorizationManager.h"
 @import HealthKit;
+@import Accounts;
 
 @interface ViewController ()<UITableViewDataSource, UITableViewDelegate>{
     NSArray *_authDataArray;
@@ -38,7 +39,11 @@
                        @"语音识别/SpeechRecognizer",
                        @"Siri",
                        @"健康数据/HealthData",
-                       @"蓝牙共享/Bluetooth"];
+                       @"蓝牙共享/Bluetooth",
+                       @"推特/Twitter",
+                       @"脸书/Facebook",
+                       @"新浪微博/SinaWeibo",
+                       @"腾讯微博/TencentWeibo"];
     
     _authTypeArray = @[@(JLAuthorizationTypePhotoLibrary),
                        @(JLAuthorizationTypeNetWork),
@@ -214,6 +219,50 @@
                 NSLog(@"Has granted:%@", _authDataArray[indexPath.row]);
             } unAuthorizedHandler:^{
                 NSLog(@"Not granted:%@", _authDataArray[indexPath.row]);
+            }];
+        }
+            break;
+        case 14:{
+            [[JLAuthorizationManager defaultManager] JL_requestAccountAuthorizationWithAuthorizationType:JLAuthorizationTypeTwitter options:nil authorizedHandler:^{
+                NSLog(@"Has granted:%@", _authDataArray[indexPath.row]);
+            } unAuthorizedHandler:^{
+                NSLog(@"Has granted:%@", _authDataArray[indexPath.row]);
+            } errorHandler:^(NSError *error) {
+                NSLog(@"error:%@", error);
+            }];
+        }
+            break;
+        case 15:{
+            NSDictionary *options = @{ ACFacebookAppIdKey: @"MY_CODE",
+                                       ACFacebookPermissionsKey: @[@"email", @"user_about_me"],
+                                      ACFacebookAudienceKey: ACFacebookAudienceFriends };
+            [[JLAuthorizationManager defaultManager] JL_requestAccountAuthorizationWithAuthorizationType:JLAuthorizationTypeFacebook options:options authorizedHandler:^{
+                NSLog(@"Has granted:%@", _authDataArray[indexPath.row]);
+            } unAuthorizedHandler:^{
+                NSLog(@"Not granted:%@", _authDataArray[indexPath.row]);
+            }errorHandler:^(NSError *error) {
+                NSLog(@"error:%@", error);
+            }];
+        }
+            break;
+        case 16:{
+            [[JLAuthorizationManager defaultManager] JL_requestAccountAuthorizationWithAuthorizationType:JLAuthorizationTypeSinaWeibo options:nil authorizedHandler:^{
+                NSLog(@"Has granted:%@", _authDataArray[indexPath.row]);
+            } unAuthorizedHandler:^{
+                NSLog(@"Not granted:%@", _authDataArray[indexPath.row]);
+            }errorHandler:^(NSError *error) {
+                NSLog(@"error:%@", error);
+            }];
+        }
+            break;
+        case 17:{
+            NSDictionary *options = @{ACTencentWeiboAppIdKey: @"123"};
+            [[JLAuthorizationManager defaultManager] JL_requestAccountAuthorizationWithAuthorizationType:JLAuthorizationTypeTencentWeibo options:options authorizedHandler:^{
+                NSLog(@"Has granted:%@", _authDataArray[indexPath.row]);
+            } unAuthorizedHandler:^{
+                NSLog(@"Not granted:%@", _authDataArray[indexPath.row]);
+            }errorHandler:^(NSError *error) {
+                NSLog(@"error:%@", error);
             }];
         }
             break;

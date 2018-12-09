@@ -27,10 +27,6 @@
 @import CoreBluetooth;
 @import Accounts;
 
-#define IOS8 ([[[UIDevice currentDevice] systemVersion] doubleValue] >= 8.0)
-#define IOS9 ([[[UIDevice currentDevice] systemVersion] doubleValue] >= 9.0)
-#define IOS10 ([[[UIDevice currentDevice] systemVersion] doubleValue] >= 10.0)
-
 @interface JLAuthorizationHealthManager : NSObject
 
 - (void)JL_requestHealthAuthorizationWithShareTypes:(nullable NSSet<HKSampleType *> *)typesToShare
@@ -145,6 +141,7 @@
 @property (nonatomic, strong) ACAccountStore *accounStore;
 @property (nonatomic, assign) BOOL isRequestMapAlways;
 @end
+
 @implementation JLAuthorizationManager
 
 + (JLAuthorizationManager *)defaultManager{
@@ -204,6 +201,9 @@
         case JLAuthorizationTypeReminder:
             [self p_requestReminderAccessWithAuthorizedHandler:authorizedHandler
                                            unAuthorizedHandler:unAuthorizedHandler];
+            break;
+        case JLAuthorizationTypeNotification:
+            
             break;
         case JLAuthorizationTypeMapAlways:
             [self p_requestMapAlwaysAccessWithAuthorizedHandler:authorizedHandler
@@ -294,7 +294,7 @@
 #pragma mark - Photo Library
 - (void)p_requestPhotoLibraryAccessWithAuthorizedHandler:(void(^)())authorizedHandler
                                      unAuthorizedHandler:(void(^)())unAuthorizedHandler{
-    if (IOS8) {
+    if (@available(iOS 8.0, *)) {
         //used `PHPhotoLibrary`
         PHAuthorizationStatus authStatus = [PHPhotoLibrary authorizationStatus];
         if (authStatus == PHAuthorizationStatusNotDetermined) {
@@ -406,8 +406,7 @@
 #pragma mark - AddressBook
 - (void)p_requestAddressBookAccessWithAuthorizedHandler:(void(^)())authorizedHandler
                               unAuthorizedHandler:(void(^)())unAuthorizedHandler{
-    if (IOS9) {
-        
+    if (@available(iOS 9.0, *)) {
         CNAuthorizationStatus authStatus = [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
         if (authStatus == CNAuthorizationStatusNotDetermined) {
             CNContactStore *contactStore = [[CNContactStore alloc] init];
@@ -423,13 +422,11 @@
                 }
             }];
         }else if (authStatus == CNAuthorizationStatusAuthorized){
-             authorizedHandler ? authorizedHandler() : nil;
+            authorizedHandler ? authorizedHandler() : nil;
         }else{
             unAuthorizedHandler ? unAuthorizedHandler() : nil;
         }
-        
-        
-    }else{
+    } else {
         //iOS9.0 eariler
 
 #pragma clang diagnostic push
@@ -513,8 +510,14 @@
     }
 }
 
-#pragma mark - Map
+#pragma mark - Notifacations
+- (void)p_requestNotificationAccessWithAuthorizedHandler:(void(^)())authorizedHandler
+                                     unAuthorizedHandler:(void(^)())unAuthorizedHandler {
+    
+    
+}
 
+#pragma mark - Map
 - (void)p_requestMapAlwaysAccessWithAuthorizedHandler:(void(^)())authorizedHandler
                                   unAuthorizedHandler:(void(^)())unAuthorizedHandler{
     if (![CLLocationManager locationServicesEnabled]) {
@@ -620,32 +623,34 @@
 #pragma mark - Siri
 - (void)p_requestSiriAccessWithAuthorizedHandler:(void(^)())authorizedHandler
                              unAuthorizedHandler:(void(^)())unAuthorizedHandler{
-    if (!IOS10) {
-        NSAssert(IOS10, @"This method must used in iOS 10.0 or later/该方法必须在iOS10.0或以上版本使用");
+    
+    if (@available(iOS 10.0, *)) {
+        INSiriAuthorizationStatus authStatus = [INPreferences siriAuthorizationStatus];
+        if (authStatus == INSiriAuthorizationStatusNotDetermined) {
+            [INPreferences requestSiriAuthorization:^(INSiriAuthorizationStatus status) {
+                if (status == INSiriAuthorizationStatusAuthorized) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        authorizedHandler ? authorizedHandler() : nil;
+                    });
+                }else{
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        unAuthorizedHandler ? unAuthorizedHandler() : nil;
+                    });
+                }
+            }];
+            
+        }else if (authStatus == INSiriAuthorizationStatusAuthorized){
+            authorizedHandler ? authorizedHandler() : nil;
+        }else{
+            unAuthorizedHandler ? unAuthorizedHandler() : nil;
+        }
+    } else {
+        printf("This method must used in iOS 10.0 or later/该方法必须在iOS10.0或以上版本使用!");
         authorizedHandler = nil;
         unAuthorizedHandler = nil;
         return;
     }
     
-    INSiriAuthorizationStatus authStatus = [INPreferences siriAuthorizationStatus];
-    if (authStatus == INSiriAuthorizationStatusNotDetermined) {
-        [INPreferences requestSiriAuthorization:^(INSiriAuthorizationStatus status) {
-            if (status == INSiriAuthorizationStatusAuthorized) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                     authorizedHandler ? authorizedHandler() : nil;
-                });
-            }else{
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    unAuthorizedHandler ? unAuthorizedHandler() : nil;
-                });
-            }
-        }];
-        
-    }else if (authStatus == INSiriAuthorizationStatusAuthorized){
-        authorizedHandler ? authorizedHandler() : nil;
-    }else{
-        unAuthorizedHandler ? unAuthorizedHandler() : nil;
-    }
 }
 
 #pragma mark - Bluetooth

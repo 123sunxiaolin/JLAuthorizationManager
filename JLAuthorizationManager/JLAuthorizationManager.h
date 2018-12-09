@@ -42,6 +42,10 @@ typedef NS_ENUM(NSInteger, JLAuthorizationType) {
      */
     JLAuthorizationTypeReminder,
     /**
+     *  通知/Notification
+     */
+    JLAuthorizationTypeNotification,
+    /**
      *  一直请求定位权限/AlwaysAuthorization
      */
     JLAuthorizationTypeMapAlways,
@@ -82,6 +86,18 @@ typedef NS_ENUM(NSInteger, JLAuthorizationType) {
      */
     JLAuthorizationTypeTencentWeibo,
     
+};
+
+/**
+ AuthorizedStatus
+ */
+typedef NS_ENUM(NSInteger, JLAuthorizationStatus) {
+    JLAuthorizationStatusNotDetermine = 0,
+    JLAuthorizationStatusDenied,
+    JLAuthorizationStatusRestricted,
+    JLAuthorizationStatusAuthorized,
+    JLAuthorizationStatusLocationAlways,
+    JLAuthorizationStatusLocationWhenInUse,
 };
 
 @interface JLAuthorizationManager : NSObject

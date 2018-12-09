@@ -26,6 +26,7 @@
 @import Intents;
 @import CoreBluetooth;
 @import Accounts;
+@import UserNotifications;
 
 @interface JLAuthorizationHealthManager : NSObject
 
@@ -126,6 +127,8 @@
     
 }
 @end
+
+static NSString *const JLPushNotificationAuthorizationKey = @"JLPushNotificationAuthorizationKey";
 
 @interface JLAuthorizationManager ()<CLLocationManagerDelegate>
 
@@ -511,9 +514,104 @@
 }
 
 #pragma mark - Notifacations
+
+- (void)p_authorizedStatusForPushNotificationsWithCompletion:(void (^)(JLAuthorizationStatus status))completion {
+    
+    [[UNUserNotificationCenter currentNotificationCenter] getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
+        
+        JLAuthorizationStatus status = JLAuthorizationStatusNotDetermine;
+        switch (settings.authorizationStatus) {
+                case UNAuthorizationStatusNotDetermined:
+                status = JLAuthorizationStatusNotDetermine;
+                break;
+                
+                case UNAuthorizationStatusDenied:
+                status = JLAuthorizationStatusDenied;
+                break;
+                
+                case UNAuthorizationStatusAuthorized:
+                case UNAuthorizationStatusProvisional:
+                status = JLAuthorizationStatusAuthorized;
+                break;
+                
+            default:
+                break;
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (completion) {
+                completion(status);
+            }
+        });
+        
+    }];
+}
+
+- (JLAuthorizationStatus)p_authorizedStatusForPushNotifications {
+    
+    BOOL isAuthorized = [[NSUserDefaults standardUserDefaults] boolForKey:JLPushNotificationAuthorizationKey];
+    if (!isAuthorized) {
+        return JLAuthorizationStatusDenied;
+    }
+    
+    if (@available(ios 8.0, *)) {
+        
+        if ([[UIApplication sharedApplication] isRegisteredForRemoteNotifications]) {
+            return JLAuthorizationStatusAuthorized;
+        } else {
+            return JLAuthorizationStatusDenied;
+        }
+        
+    } else {
+        
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        if ([[UIApplication sharedApplication] enabledRemoteNotificationTypes] == UIRemoteNotificationTypeNone) {
+#pragma clang diagnostic pop
+            
+            return JLAuthorizationStatusDenied;
+        } else {
+            return JLAuthorizationStatusAuthorized;
+        }
+    }
+}
+
 - (void)p_requestNotificationAccessWithAuthorizedHandler:(void(^)())authorizedHandler
                                      unAuthorizedHandler:(void(^)())unAuthorizedHandler {
+
+    // TODO: iOS10之前通知授权信息的缓存
     
+    if (@available(iOS 10.0, *)) {
+        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+        [center requestAuthorizationWithOptions:UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert completionHandler:^(BOOL granted, NSError * _Nullable error) {
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (granted) {
+                    if (authorizedHandler) {
+                        authorizedHandler();
+                    }
+                } else {
+                    if (unAuthorizedHandler) {
+                        unAuthorizedHandler();
+                    }
+                }
+            });
+        }];
+    } else if (@available(iOS 8.0, *)) {
+        
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes: UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert categories:nil];
+        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+        
+    } else {
+        
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        UIRemoteNotificationType type = UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert;
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:type];
+#pragma clang diagnostic pop
+        
+        [[UIApplication sharedApplication] registerForRemoteNotifications];
+    }
     
 }
 

@@ -15,7 +15,7 @@ JLAuthorizationManager
 - [x] Async fetch authorized status for **CellularNetwork**
 - [x] Async fetch authorized status for **Microphone**
 - [x] Async fetch authorized status for **Calendar**
-- [x]Async fetch authorized status for **Reminder**
+- [x] Async fetch authorized status for **Reminder**
 - [x] Async fetch authorized status for **Notification**
 - [x] Async fetch authorized status for **Location**
 - [x] Async fetch authorized status for **AppleMusic**

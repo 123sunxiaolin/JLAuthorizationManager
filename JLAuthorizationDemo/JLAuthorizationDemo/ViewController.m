@@ -43,7 +43,8 @@
                        @"推特/Twitter",
                        @"脸书/Facebook",
                        @"新浪微博/SinaWeibo",
-                       @"腾讯微博/TencentWeibo"];
+                       @"腾讯微博/TencentWeibo",
+                       @"通知/Notifications"];
     
     _authTypeArray = @[@(JLAuthorizationTypePhotoLibrary),
                        @(JLAuthorizationTypeNetWork),
@@ -209,7 +210,7 @@
             [[JLAuthorizationManager defaultManager] JL_requestHealthAuthorizationWithShareTypes:shareSet readTypes:shareSet authorizedHandler:^{
                 NSLog(@"Has granted:%@", _authDataArray[indexPath.row]);
             } unAuthorizedHandler:^{
-                 NSLog(@"Not granted:%@", _authDataArray[indexPath.row]);
+                NSLog(@"Not granted:%@", _authDataArray[indexPath.row]);
             }];
             
         }
@@ -235,7 +236,7 @@
         case 15:{
             NSDictionary *options = @{ ACFacebookAppIdKey: @"MY_CODE",
                                        ACFacebookPermissionsKey: @[@"email", @"user_about_me"],
-                                      ACFacebookAudienceKey: ACFacebookAudienceFriends };
+                                       ACFacebookAudienceKey: ACFacebookAudienceFriends };
             [[JLAuthorizationManager defaultManager] JL_requestAccountAuthorizationWithAuthorizationType:JLAuthorizationTypeFacebook options:options authorizedHandler:^{
                 NSLog(@"Has granted:%@", _authDataArray[indexPath.row]);
             } unAuthorizedHandler:^{
@@ -266,7 +267,16 @@
             }];
         }
             break;
+        case 18: {
+            [[JLAuthorizationManager defaultManager] JL_requestAuthorizationWithAuthorizationType:JLAuthorizationTypeNotification authorizedHandler:^{
+                
+                NSLog(@"Has granted:%@", _authDataArray[indexPath.row]);
+                
+            } unAuthorizedHandler:^{
+                NSLog(@"Not granted:%@", _authDataArray[indexPath.row]);
+            }];
             
+        }
             
         default:
             break;

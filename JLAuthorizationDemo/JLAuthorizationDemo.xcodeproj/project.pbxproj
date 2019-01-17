@@ -38,6 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1BB6B04821F050D500C1577C /* JLConstant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JLConstant.h; sourceTree = "<group>"; };
 		C97E09741E8E6BFE00C3F70D /* JLAuthorizationDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = JLAuthorizationDemo.entitlements; sourceTree = "<group>"; };
 		C97E09761E8E6C3900C3F70D /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		C97E09781E8F548000C3F70D /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
@@ -102,6 +103,7 @@
 			children = (
 				DD2345291E91F39200F5B58D /* JLAuthorizationManager.h */,
 				DD2345281E91F39200F5B58D /* JLAuthorizationManager.m */,
+				1BB6B04821F050D500C1577C /* JLConstant.h */,
 			);
 			name = JLAuthorizationManager;
 			sourceTree = "<group>";

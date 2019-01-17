@@ -93,11 +93,9 @@ typedef NS_ENUM(NSInteger, JLAuthorizationType) {
  */
 typedef NS_ENUM(NSInteger, JLAuthorizationStatus) {
     JLAuthorizationStatusNotDetermine = 0,
-    JLAuthorizationStatusDenied,
-    JLAuthorizationStatusRestricted,
     JLAuthorizationStatusAuthorized,
-    JLAuthorizationStatusLocationAlways,
-    JLAuthorizationStatusLocationWhenInUse,
+    JLAuthorizationStatusUnAuthorized,
+    JLAuthorizationStatusLocationDisabled,
 };
 
 @interface JLAuthorizationManager : NSObject

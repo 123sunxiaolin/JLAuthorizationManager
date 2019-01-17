@@ -129,6 +129,7 @@
 @end
 
 static NSString *const JLPushNotificationAuthorizationKey = @"JLPushNotificationAuthorizationKey";
+static NSString *const JLRequestNotificationsKey = @"JL_requestedNotifications";
 
 @interface JLAuthorizationManager ()<CLLocationManagerDelegate>
 
@@ -206,7 +207,8 @@ static NSString *const JLPushNotificationAuthorizationKey = @"JLPushNotification
                                            unAuthorizedHandler:unAuthorizedHandler];
             break;
         case JLAuthorizationTypeNotification:
-            
+            [self p_requestNotificationAccessWithAuthorizedHandler:authorizedHandler
+                                               unAuthorizedHandler:unAuthorizedHandler];
             break;
         case JLAuthorizationTypeMapAlways:
             [self p_requestMapAlwaysAccessWithAuthorizedHandler:authorizedHandler
@@ -526,7 +528,7 @@ static NSString *const JLPushNotificationAuthorizationKey = @"JLPushNotification
                 break;
                 
                 case UNAuthorizationStatusDenied:
-                status = JLAuthorizationStatusDenied;
+                status = JLAuthorizationStatusUnAuthorized;
                 break;
                 
                 case UNAuthorizationStatusAuthorized:
@@ -551,7 +553,7 @@ static NSString *const JLPushNotificationAuthorizationKey = @"JLPushNotification
     
     BOOL isAuthorized = [[NSUserDefaults standardUserDefaults] boolForKey:JLPushNotificationAuthorizationKey];
     if (!isAuthorized) {
-        return JLAuthorizationStatusDenied;
+        return JLAuthorizationStatusUnAuthorized;
     }
     
     if (@available(ios 8.0, *)) {
@@ -559,7 +561,7 @@ static NSString *const JLPushNotificationAuthorizationKey = @"JLPushNotification
         if ([[UIApplication sharedApplication] isRegisteredForRemoteNotifications]) {
             return JLAuthorizationStatusAuthorized;
         } else {
-            return JLAuthorizationStatusDenied;
+            return JLAuthorizationStatusUnAuthorized;
         }
         
     } else {
@@ -569,7 +571,7 @@ static NSString *const JLPushNotificationAuthorizationKey = @"JLPushNotification
         if ([[UIApplication sharedApplication] enabledRemoteNotificationTypes] == UIRemoteNotificationTypeNone) {
 #pragma clang diagnostic pop
             
-            return JLAuthorizationStatusDenied;
+            return JLAuthorizationStatusUnAuthorized;
         } else {
             return JLAuthorizationStatusAuthorized;
         }
@@ -579,8 +581,6 @@ static NSString *const JLPushNotificationAuthorizationKey = @"JLPushNotification
 - (void)p_requestNotificationAccessWithAuthorizedHandler:(void(^)())authorizedHandler
                                      unAuthorizedHandler:(void(^)())unAuthorizedHandler {
 
-    // TODO: iOS10之前通知授权信息的缓存
-    
     if (@available(iOS 10.0, *)) {
         UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
         [center requestAuthorizationWithOptions:UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert completionHandler:^(BOOL granted, NSError * _Nullable error) {

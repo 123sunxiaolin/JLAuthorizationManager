@@ -1,10 +1,30 @@
 JLAuthorizationManager
+
+![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg) ![Pod Version](https://img.shields.io/badge/Pod-v1.1.0-orange.svg) ![Pod Platform](https://img.shields.io/badge/Platform-iOS-lightgrey.svg) ![System Version](https://img.shields.io/badge/iOS-8.0-blue.svg) [![Pod License](https://img.shields.io/badge/License-MIT-333333.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 ---
 🔑 **JLAuthorizationManager** is a project to show all develop process  authorization managers.
 
 **JLAuthorizationManager** provides uniform method by using `JL_requestAuthorizationWithAuthorizationType:authorizedHandler:unAuthorizedHandler:` except when request access to `HealthKit` by using `JL_requestHealthAuthorizationWithShareTypes:readTypes:authorizedHandler:unAuthorizedHandler:`
 
 **JLAuthorizationManager** also provides singleton method by using `+ (JLAuthorizationManager *)defaultManager;`,and other methods all are instance method.You can choose any authorization type from an enum type `JLAuthorizationType`.
+
+## Features
+
+- [x] Async fetch authorized status for **Photos**
+- [x] Async fetch authorized status for **Camera**
+- [x] Async fetch authorized status for **CellularNetwork**
+- [x] Async fetch authorized status for **Microphone**
+- [x] Async fetch authorized status for **Calendar**
+- [x]Async fetch authorized status for **Reminder**
+- [x] Async fetch authorized status for **Notification**
+- [x] Async fetch authorized status for **Location**
+- [x] Async fetch authorized status for **AppleMusic**
+- [x] Async fetch authorized status for **SpeechRecognizer**
+- [x] Async fetch authorized status for **Siri**
+- [x] Async fetch authorized status for **Bluetooth**
+- [x] Callback with main thread
+- [x] Callback in two different block
+- [x] Covering the full
 
 Getting Started
 ------------

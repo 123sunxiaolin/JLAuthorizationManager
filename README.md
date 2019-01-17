@@ -77,7 +77,7 @@ Installation
 - **For iOS 8+ projects** with [CocoaPods](https://cocoapods.org):
 
     ```ruby
-     pod 'JLAuthorizationManager', '~> 1.0.0'
+     pod 'JLAuthorizationManager', '~> 1.1.0'
     ```
     
 - **Use Manually**

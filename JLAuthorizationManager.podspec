@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name         = 'JLAuthorizationManager'
-    s.version      = '1.0.0'
+    s.version      = '1.1.0'
     s.summary      = 'A Project can provide uniform method for system authorization accesses! '
     s.homepage     = 'https://github.com/123sunxiaolin/JLAuthorizationManager'
     s.license      = 'MIT'

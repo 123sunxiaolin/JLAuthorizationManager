@@ -8,6 +8,8 @@ JLAuthorizationManager
 
 Getting Started
 ------------
+### Update Records
+- 2019-1-17: add notification、appleMusic etc permission methods.
 
 ### 1、Most Authorization Access Method
 First, import header file:`#import "JLAuthorizationManager.h"`<br>

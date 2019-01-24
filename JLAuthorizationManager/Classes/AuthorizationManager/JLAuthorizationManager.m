@@ -32,16 +32,16 @@
 
 - (void)JL_requestHealthAuthorizationWithShareTypes:(nullable NSSet<HKSampleType *> *)typesToShare
                                           readTypes:(nullable NSSet<HKObjectType *> *)typesToRead
-                                  authorizedHandler:(void(^)())authorizedHandler
-                                unAuthorizedHandler:(void(^)())unAuthorizedHandler;
+                                  authorizedHandler:(JLGeneralAuthorizationCompletion)authorizedHandler
+                                unAuthorizedHandler:(JLGeneralAuthorizationCompletion)unAuthorizedHandler;
 @end
 
 @implementation JLAuthorizationHealthManager
 
 - (void)JL_requestHealthAuthorizationWithShareTypes:(nullable NSSet<HKSampleType *> *)typesToShare
                                           readTypes:(nullable NSSet<HKObjectType *> *)typesToRead
-                                  authorizedHandler:(void(^)())authorizedHandler
-                                unAuthorizedHandler:(void(^)())unAuthorizedHandler{
+                                  authorizedHandler:(JLGeneralAuthorizationCompletion)authorizedHandler
+                                unAuthorizedHandler:(JLGeneralAuthorizationCompletion)unAuthorizedHandler{
 
     BOOL isSupportHealthKit = [HKHealthStore isHealthDataAvailable];
     NSAssert(isSupportHealthKit, @"Notice it is not support HealthKit!");
@@ -172,8 +172,8 @@ static NSString *const JLRequestNotificationsKey = @"JL_requestedNotifications";
 }
 
 - (void)JL_requestAuthorizationWithAuthorizationType:(JLAuthorizationType)authorizationType
-                                   authorizedHandler:(void(^)())authorizedHandler
-                                 unAuthorizedHandler:(void(^)())unAuthorizedHandler{
+                                   authorizedHandler:(JLGeneralAuthorizationCompletion)authorizedHandler
+                                 unAuthorizedHandler:(JLGeneralAuthorizationCompletion)unAuthorizedHandler{
     switch (authorizationType) {
         case JLAuthorizationTypePhotoLibrary:
             [self p_requestPhotoLibraryAccessWithAuthorizedHandler:authorizedHandler
@@ -244,8 +244,8 @@ static NSString *const JLRequestNotificationsKey = @"JL_requestedNotifications";
 
 - (void)JL_requestHealthAuthorizationWithShareTypes:(NSSet*)typesToShare
                                           readTypes:(NSSet*)typesToRead
-                                  authorizedHandler:(void(^)())authorizedHandler
-                                unAuthorizedHandler:(void(^)())unAuthorizedHandler{
+                                  authorizedHandler:(JLGeneralAuthorizationCompletion)authorizedHandler
+                                unAuthorizedHandler:(JLGeneralAuthorizationCompletion)unAuthorizedHandler{
     
     JLAuthorizationHealthManager *healthManager = [JLAuthorizationHealthManager new];
     [healthManager JL_requestHealthAuthorizationWithShareTypes:typesToShare
@@ -258,8 +258,8 @@ static NSString *const JLRequestNotificationsKey = @"JL_requestedNotifications";
 
 - (void)JL_requestAccountAuthorizationWithAuthorizationType:(JLAuthorizationType)authorizationType
                                                     options:(NSDictionary *)options
-                                          authorizedHandler:(void(^)())authorizedHandler
-                                        unAuthorizedHandler:(void(^)())unAuthorizedHandler
+                                          authorizedHandler:(JLGeneralAuthorizationCompletion)authorizedHandler
+                                        unAuthorizedHandler:(JLGeneralAuthorizationCompletion)unAuthorizedHandler
                                                errorHandler:(void(^)(NSError *error))errorHandler{
     switch (authorizationType) {
         case JLAuthorizationTypeTwitter:
@@ -297,8 +297,8 @@ static NSString *const JLRequestNotificationsKey = @"JL_requestedNotifications";
 }
 
 #pragma mark - Photo Library
-- (void)p_requestPhotoLibraryAccessWithAuthorizedHandler:(void(^)())authorizedHandler
-                                     unAuthorizedHandler:(void(^)())unAuthorizedHandler{
+- (void)p_requestPhotoLibraryAccessWithAuthorizedHandler:(JLGeneralAuthorizationCompletion)authorizedHandler
+                                     unAuthorizedHandler:(JLGeneralAuthorizationCompletion)unAuthorizedHandler{
     if (@available(iOS 8.0, *)) {
         //used `PHPhotoLibrary`
         PHAuthorizationStatus authStatus = [PHPhotoLibrary authorizationStatus];
@@ -335,33 +335,37 @@ static NSString *const JLRequestNotificationsKey = @"JL_requestedNotifications";
 }
 
 #pragma mark - Network
-- (void)p_requestNetworkAccessWithAuthorizedHandler:(void(^)())authorizedHandler
-                                unAuthorizedHandler:(void(^)())unAuthorizedHandler{
+- (void)p_requestNetworkAccessWithAuthorizedHandler:(JLGeneralAuthorizationCompletion)authorizedHandler
+                                unAuthorizedHandler:(JLGeneralAuthorizationCompletion)unAuthorizedHandler{
     
-    CTCellularData *cellularData = [[CTCellularData alloc] init];
-    CTCellularDataRestrictedState authState = cellularData.restrictedState;
-    if (authState == kCTCellularDataRestrictedStateUnknown) {
-        cellularData.cellularDataRestrictionDidUpdateNotifier = ^(CTCellularDataRestrictedState state){
-            if (state == kCTCellularDataNotRestricted) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    authorizedHandler ? authorizedHandler() : nil;
-                });
-            }else{
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    unAuthorizedHandler ? unAuthorizedHandler() : nil;
-                });
-            }
-        };
-    }else if (authState == kCTCellularDataNotRestricted){
-        authorizedHandler ? authorizedHandler() : nil;
-    }else{
-        unAuthorizedHandler ? unAuthorizedHandler() : nil;
+    if (@available(iOS 9.0, *)) {
+        CTCellularData *cellularData = [[CTCellularData alloc] init];
+        CTCellularDataRestrictedState authState = cellularData.restrictedState;
+        if (authState == kCTCellularDataRestrictedStateUnknown) {
+            cellularData.cellularDataRestrictionDidUpdateNotifier = ^(CTCellularDataRestrictedState state){
+                if (state == kCTCellularDataNotRestricted) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        authorizedHandler ? authorizedHandler() : nil;
+                    });
+                }else{
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        unAuthorizedHandler ? unAuthorizedHandler() : nil;
+                    });
+                }
+            };
+        }else if (authState == kCTCellularDataNotRestricted){
+            authorizedHandler ? authorizedHandler() : nil;
+        }else{
+            unAuthorizedHandler ? unAuthorizedHandler() : nil;
+        }
+    } else {
+        // Fallback on earlier versions
     }
 }
 
 #pragma mark - AvcaptureMedia
-- (void)p_requestCameraAccessWithAuthorizedHandler:(void(^)())authorizedHandler
-                               unAuthorizedHandler:(void(^)())unAuthorizedHandler{
+- (void)p_requestCameraAccessWithAuthorizedHandler:(JLGeneralAuthorizationCompletion)authorizedHandler
+                               unAuthorizedHandler:(JLGeneralAuthorizationCompletion)unAuthorizedHandler{
     
     AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
     if (authStatus == AVAuthorizationStatusNotDetermined) {
@@ -384,8 +388,8 @@ static NSString *const JLRequestNotificationsKey = @"JL_requestedNotifications";
     }
 }
 
-- (void)p_requestAudioAccessWithAuthorizedHandler:(void(^)())authorizedHandler
-                              unAuthorizedHandler:(void(^)())unAuthorizedHandler{
+- (void)p_requestAudioAccessWithAuthorizedHandler:(JLGeneralAuthorizationCompletion)authorizedHandler
+                              unAuthorizedHandler:(JLGeneralAuthorizationCompletion)unAuthorizedHandler{
     
     AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeAudio];
     if (authStatus == AVAuthorizationStatusNotDetermined) {
@@ -409,8 +413,8 @@ static NSString *const JLRequestNotificationsKey = @"JL_requestedNotifications";
 }
 
 #pragma mark - AddressBook
-- (void)p_requestAddressBookAccessWithAuthorizedHandler:(void(^)())authorizedHandler
-                              unAuthorizedHandler:(void(^)())unAuthorizedHandler{
+- (void)p_requestAddressBookAccessWithAuthorizedHandler:(JLGeneralAuthorizationCompletion)authorizedHandler
+                              unAuthorizedHandler:(JLGeneralAuthorizationCompletion)unAuthorizedHandler{
     if (@available(iOS 9.0, *)) {
         CNAuthorizationStatus authStatus = [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
         if (authStatus == CNAuthorizationStatusNotDetermined) {
@@ -467,8 +471,8 @@ static NSString *const JLRequestNotificationsKey = @"JL_requestedNotifications";
 }
 
 #pragma mark - Calendar
-- (void)p_requestCalendarAccessWithAuthorizedHandler:(void(^)())authorizedHandler
-                                 unAuthorizedHandler:(void(^)())unAuthorizedHandler{
+- (void)p_requestCalendarAccessWithAuthorizedHandler:(JLGeneralAuthorizationCompletion)authorizedHandler
+                                 unAuthorizedHandler:(JLGeneralAuthorizationCompletion)unAuthorizedHandler{
     
     EKAuthorizationStatus authStatus = [EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent];
     if (authStatus == EKAuthorizationStatusNotDetermined) {
@@ -492,8 +496,8 @@ static NSString *const JLRequestNotificationsKey = @"JL_requestedNotifications";
 }
 
 #pragma mark - Reminder
-- (void)p_requestReminderAccessWithAuthorizedHandler:(void(^)())authorizedHandler
-                                 unAuthorizedHandler:(void(^)())unAuthorizedHandler{
+- (void)p_requestReminderAccessWithAuthorizedHandler:(JLGeneralAuthorizationCompletion)authorizedHandler
+                                 unAuthorizedHandler:(JLGeneralAuthorizationCompletion)unAuthorizedHandler{
     EKAuthorizationStatus authStatus = [EKEventStore authorizationStatusForEntityType:EKEntityTypeReminder];
     if (authStatus == EKAuthorizationStatusNotDetermined) {
         EKEventStore *eventStore = [[EKEventStore alloc] init];
@@ -578,8 +582,8 @@ static NSString *const JLRequestNotificationsKey = @"JL_requestedNotifications";
     }
 }
 
-- (void)p_requestNotificationAccessWithAuthorizedHandler:(void(^)())authorizedHandler
-                                     unAuthorizedHandler:(void(^)())unAuthorizedHandler {
+- (void)p_requestNotificationAccessWithAuthorizedHandler:(JLGeneralAuthorizationCompletion)authorizedHandler
+                                     unAuthorizedHandler:(JLGeneralAuthorizationCompletion)unAuthorizedHandler {
 
     if (@available(iOS 10.0, *)) {
         UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
@@ -616,8 +620,8 @@ static NSString *const JLRequestNotificationsKey = @"JL_requestedNotifications";
 }
 
 #pragma mark - Map
-- (void)p_requestMapAlwaysAccessWithAuthorizedHandler:(void(^)())authorizedHandler
-                                  unAuthorizedHandler:(void(^)())unAuthorizedHandler{
+- (void)p_requestMapAlwaysAccessWithAuthorizedHandler:(JLGeneralAuthorizationCompletion)authorizedHandler
+                                  unAuthorizedHandler:(JLGeneralAuthorizationCompletion)unAuthorizedHandler{
     if (![CLLocationManager locationServicesEnabled]) {
         NSAssert([CLLocationManager locationServicesEnabled], @"Location service enabled failed");
         return;
@@ -642,8 +646,8 @@ static NSString *const JLRequestNotificationsKey = @"JL_requestedNotifications";
     }
 }
 
-- (void)p_requestMapWhenInUseAccessWithAuthorizedHandler:(void(^)())authorizedHandler
-                                     unAuthorizedHandler:(void(^)())unAuthorizedHandler{
+- (void)p_requestMapWhenInUseAccessWithAuthorizedHandler:(JLGeneralAuthorizationCompletion)authorizedHandler
+                                     unAuthorizedHandler:(JLGeneralAuthorizationCompletion)unAuthorizedHandler{
     if (![CLLocationManager locationServicesEnabled]) {
         NSAssert([CLLocationManager locationServicesEnabled], @"Location service enabled failed");
         return;
@@ -667,60 +671,67 @@ static NSString *const JLRequestNotificationsKey = @"JL_requestedNotifications";
     }
 }
 #pragma mark - Apple Music
-- (void)p_requestAppleMusicAccessWithAuthorizedHandler:(void(^)())authorizedHandler
-                                   unAuthorizedHandler:(void(^)())unAuthorizedHandler{
-    MPMediaLibraryAuthorizationStatus authStatus = [MPMediaLibrary authorizationStatus];
-    if (authStatus == MPMediaLibraryAuthorizationStatusNotDetermined) {
-        [MPMediaLibrary requestAuthorization:^(MPMediaLibraryAuthorizationStatus status) {
-            if (status == MPMediaLibraryAuthorizationStatusAuthorized) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    authorizedHandler ? authorizedHandler() : nil;
-                });
-            }else{
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    unAuthorizedHandler ? unAuthorizedHandler() : nil;
-                });
-            }
-        }];
-    }else if (authStatus == MPMediaLibraryAuthorizationStatusAuthorized){
-         authorizedHandler ? authorizedHandler() : nil;
-    }else{
-        unAuthorizedHandler ? unAuthorizedHandler() : nil;
+- (void)p_requestAppleMusicAccessWithAuthorizedHandler:(JLGeneralAuthorizationCompletion)authorizedHandler
+                                   unAuthorizedHandler:(JLGeneralAuthorizationCompletion)unAuthorizedHandler{
+    if (@available(iOS 9.3, *)) {
+        MPMediaLibraryAuthorizationStatus authStatus = [MPMediaLibrary authorizationStatus];
+        if (authStatus == MPMediaLibraryAuthorizationStatusNotDetermined) {
+            [MPMediaLibrary requestAuthorization:^(MPMediaLibraryAuthorizationStatus status) {
+                if (status == MPMediaLibraryAuthorizationStatusAuthorized) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        authorizedHandler ? authorizedHandler() : nil;
+                    });
+                }else{
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        unAuthorizedHandler ? unAuthorizedHandler() : nil;
+                    });
+                }
+            }];
+        }else if (authStatus == MPMediaLibraryAuthorizationStatusAuthorized){
+            authorizedHandler ? authorizedHandler() : nil;
+        }else{
+            unAuthorizedHandler ? unAuthorizedHandler() : nil;
+        }
+    } else {
+        // Fallback on earlier versions
     }
 }
 
 #pragma mark - SpeechRecognizer
-- (void)p_requestSpeechRecognizerAccessWithAuthorizedHandler:(void(^)())authorizedHandler
-                                         unAuthorizedHandler:(void(^)())unAuthorizedHandler{
-    
-    SFSpeechRecognizerAuthorizationStatus authStatus = [SFSpeechRecognizer authorizationStatus];
-    if (authStatus == SFSpeechRecognizerAuthorizationStatusNotDetermined) {
-        [SFSpeechRecognizer requestAuthorization:^(SFSpeechRecognizerAuthorizationStatus status) {
-            if (status == SFSpeechRecognizerAuthorizationStatusAuthorized) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    authorizedHandler ? authorizedHandler() : nil;
-                });
-            }else{
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    unAuthorizedHandler ? unAuthorizedHandler() : nil;
-                });
-            }
-        }];
-        
-    }else if (authStatus == SFSpeechRecognizerAuthorizationStatusAuthorized){
-        authorizedHandler ? authorizedHandler() : nil;
-    }else{
-        unAuthorizedHandler ? unAuthorizedHandler() : nil;
+- (void)p_requestSpeechRecognizerAccessWithAuthorizedHandler:(JLGeneralAuthorizationCompletion)authorizedHandler
+                                         unAuthorizedHandler:(JLGeneralAuthorizationCompletion)unAuthorizedHandler{
+    if (@available(iOS 10.0, *)) {
+        SFSpeechRecognizerAuthorizationStatus authStatus = [SFSpeechRecognizer authorizationStatus];
+        if (authStatus == SFSpeechRecognizerAuthorizationStatusNotDetermined) {
+            [SFSpeechRecognizer requestAuthorization:^(SFSpeechRecognizerAuthorizationStatus status) {
+                if (status == SFSpeechRecognizerAuthorizationStatusAuthorized) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        authorizedHandler ? authorizedHandler() : nil;
+                    });
+                }else{
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        unAuthorizedHandler ? unAuthorizedHandler() : nil;
+                    });
+                }
+            }];
+            
+        }else if (authStatus == SFSpeechRecognizerAuthorizationStatusAuthorized){
+            authorizedHandler ? authorizedHandler() : nil;
+        }else{
+            unAuthorizedHandler ? unAuthorizedHandler() : nil;
+        }
+    } else {
+        // Fallback on earlier versions
     }
 }
 
 #pragma mark - Health
-- (void)p_requestHealthAccessWithAuthorizedHandler:(void(^)())authorizedHandler
-                               unAuthorizedHandler:(void(^)())unAuthorizedHandler{
+- (void)p_requestHealthAccessWithAuthorizedHandler:(JLGeneralAuthorizationCompletion)authorizedHandler
+                               unAuthorizedHandler:(JLGeneralAuthorizationCompletion)unAuthorizedHandler{
 }
 #pragma mark - Siri
-- (void)p_requestSiriAccessWithAuthorizedHandler:(void(^)())authorizedHandler
-                             unAuthorizedHandler:(void(^)())unAuthorizedHandler{
+- (void)p_requestSiriAccessWithAuthorizedHandler:(JLGeneralAuthorizationCompletion)authorizedHandler
+                             unAuthorizedHandler:(JLGeneralAuthorizationCompletion)unAuthorizedHandler{
     
     if (@available(iOS 10.0, *)) {
         INSiriAuthorizationStatus authStatus = [INPreferences siriAuthorizationStatus];
@@ -752,8 +763,8 @@ static NSString *const JLRequestNotificationsKey = @"JL_requestedNotifications";
 }
 
 #pragma mark - Bluetooth
-- (void)p_requestBluetoothAccessWithAuthorizedHandler:(void(^)())authorizedHandler
-                                  unAuthorizedHandler:(void(^)())unAuthorizedHandler{
+- (void)p_requestBluetoothAccessWithAuthorizedHandler:(JLGeneralAuthorizationCompletion)authorizedHandler
+                                  unAuthorizedHandler:(JLGeneralAuthorizationCompletion)unAuthorizedHandler{
     CBPeripheralManagerAuthorizationStatus authStatus = [CBPeripheralManager authorizationStatus];
     if (authStatus == CBPeripheralManagerAuthorizationStatusNotDetermined) {
         
@@ -771,8 +782,8 @@ static NSString *const JLRequestNotificationsKey = @"JL_requestedNotifications";
 #pragma mark - Account
 - (void)p_requestAccountWithaccountTypeIndentifier:(NSString *)typeIndentifier
                                            options:(NSDictionary *)options
-                                 authorizedHandler:(void(^)())authorizedHandler
-                               unAuthorizedHandler:(void(^)())unAuthorizedHandler
+                                 authorizedHandler:(JLGeneralAuthorizationCompletion)authorizedHandler
+                               unAuthorizedHandler:(JLGeneralAuthorizationCompletion)unAuthorizedHandler
                                       errorHandler:(void(^)(NSError *error))errorHandler{
     
     ACAccountType *accountType = [self.accounStore accountTypeWithAccountTypeIdentifier:typeIndentifier];

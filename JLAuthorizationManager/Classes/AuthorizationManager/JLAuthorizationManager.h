@@ -13,6 +13,8 @@
 #import <Foundation/Foundation.h>
 #import "JLConstant.h"
 
+typedef void (^JLGeneralAuthorizationCompletion) (void);
+
 @interface JLAuthorizationManager : NSObject
 
 + (JLAuthorizationManager *)defaultManager;
@@ -25,8 +27,8 @@
  @param unAuthorizedHandler 未授权的回调
  */
 - (void)JL_requestAuthorizationWithAuthorizationType:(JLAuthorizationType)authorizationType
-                                   authorizedHandler:(void(^)())authorizedHandler
-                                 unAuthorizedHandler:(void(^)())unAuthorizedHandler;
+                                   authorizedHandler:(JLGeneralAuthorizationCompletion)authorizedHandler
+                                 unAuthorizedHandler:(JLGeneralAuthorizationCompletion)unAuthorizedHandler;
 
 /**
  请求健康数据权限统一入口
@@ -38,8 +40,8 @@
  */
 - (void)JL_requestHealthAuthorizationWithShareTypes:(NSSet*)typesToShare
                                           readTypes:(NSSet*)typesToRead
-                                  authorizedHandler:(void(^)())authorizedHandler
-                                unAuthorizedHandler:(void(^)())unAuthorizedHandler;
+                                  authorizedHandler:(JLGeneralAuthorizationCompletion)authorizedHandler
+                                unAuthorizedHandler:(JLGeneralAuthorizationCompletion)unAuthorizedHandler;
 /**
   请求社交账号访问权限
 
@@ -51,7 +53,7 @@
  */
 - (void)JL_requestAccountAuthorizationWithAuthorizationType:(JLAuthorizationType)authorizationType
                                                     options:(NSDictionary *)options
-                                          authorizedHandler:(void(^)())authorizedHandler
-                                        unAuthorizedHandler:(void(^)())unAuthorizedHandler
+                                          authorizedHandler:(JLGeneralAuthorizationCompletion)authorizedHandler
+                                        unAuthorizedHandler:(JLGeneralAuthorizationCompletion)unAuthorizedHandler
                                                errorHandler:(void(^)(NSError *error))errorHandler;
 @end

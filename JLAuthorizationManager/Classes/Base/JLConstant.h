@@ -21,7 +21,7 @@ typedef NS_ENUM(NSInteger, JLAuthorizationType) {
     /**
      *  网络/Cellular Network
      */
-    JLAuthorizationTypeNetWork,
+    JLAuthorizationTypeCellularNetWork,
     /**
      *  相机/Camera
      */

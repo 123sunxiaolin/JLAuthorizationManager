@@ -8,9 +8,10 @@
 
 @import HealthKit;
 @import Accounts;
+@import JLAuthorizationManager;
 
 #import "JLViewController.h"
-#import <JLAuthorizationManager/JLAuthorizationManager.h>
+
 
 @interface JLViewController ()<UITableViewDataSource, UITableViewDelegate>{
     NSArray *_authDataArray;
@@ -49,7 +50,7 @@
                        @"通知/Notifications"];
     
     _authTypeArray = @[@(JLAuthorizationTypePhotoLibrary),
-                       @(JLAuthorizationTypeNetWork),
+                       @(JLAuthorizationTypeCellularNetWork),
                        @(JLAuthorizationTypeCamera),
                        @(JLAuthorizationTypeMicrophone),
                        @(JLAuthorizationTypeAddressBook),
@@ -118,7 +119,7 @@
         }
             break;
         case 1:{
-            [[JLAuthorizationManager defaultManager] JL_requestAuthorizationWithAuthorizationType:JLAuthorizationTypeNetWork authorizedHandler:^{
+            [[JLAuthorizationManager defaultManager] JL_requestAuthorizationWithAuthorizationType:JLAuthorizationTypeCellularNetWork authorizedHandler:^{
                 NSLog(@"Has granted:%@", _authDataArray[indexPath.row]);
             } unAuthorizedHandler:^{
                 NSLog(@"Not granted:%@", _authDataArray[indexPath.row]);

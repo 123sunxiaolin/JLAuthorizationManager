@@ -133,10 +133,10 @@ static NSString *const JLRequestNotificationsKey = @"JL_requestedNotifications";
 
 @interface JLAuthorizationManager ()<CLLocationManagerDelegate>
 
-@property (nonatomic, copy) void (^mapAlwaysAuthorizedHandler)();
-@property (nonatomic, copy) void (^mapAlwaysUnAuthorizedHandler)();
-@property (nonatomic, copy) void (^mapWhenInUseAuthorizedHandler)();
-@property (nonatomic, copy) void (^mapWhenInUseUnAuthorizedHandler)();
+@property (nonatomic, copy) JLGeneralAuthorizationCompletion mapAlwaysAuthorizedHandler;
+@property (nonatomic, copy) JLGeneralAuthorizationCompletion mapAlwaysUnAuthorizedHandler;
+@property (nonatomic, copy) JLGeneralAuthorizationCompletion mapWhenInUseAuthorizedHandler;
+@property (nonatomic, copy) JLGeneralAuthorizationCompletion mapWhenInUseUnAuthorizedHandler;
 
 /**
  地理位置管理对象
@@ -180,7 +180,7 @@ static NSString *const JLRequestNotificationsKey = @"JL_requestedNotifications";
                                                unAuthorizedHandler:unAuthorizedHandler];
             break;
             
-        case JLAuthorizationTypeNetWork:
+        case JLAuthorizationTypeCellularNetWork:
             [self p_requestNetworkAccessWithAuthorizedHandler:authorizedHandler
                                           unAuthorizedHandler:unAuthorizedHandler];
             break;

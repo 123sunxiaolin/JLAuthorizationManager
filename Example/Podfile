@@ -1,0 +1,13 @@
+use_frameworks!
+
+platform :ios, '8.0'
+
+target 'JLAuthorizationManager_Example' do
+  pod 'JLAuthorizationManager', :path => '../'
+
+  target 'JLAuthorizationManager_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end

@@ -101,6 +101,39 @@ typedef NS_ENUM(NSInteger, JLAuthorizationStatus) {
 
 #pragma mark - Constant Key
 
+/**
+ Motion
+ */
+static NSString *const JLAuthorizationRequestedMotionKey               = @"JL_requestedMotion";
 
+/**
+ Notifications
+ */
+static NSString *const JLAuthorizationRequestedNotificationsKey        = @"JL_requestedNotifications";
+
+/**
+ Bluetooth
+ */
+static NSString *const JLAuthorizationRequestedBluetoothKey            = @"JL_requestedBluetooth";
+
+/**
+ Map
+ */
+static NSString *const JLAuthorizationRequestedInUseToAlwaysUpgradeKey = @"JL_requestedInUseToAlwaysUpgrade";
+
+#pragma mark - App InfoPlist Key
+static NSString *const JLAuthorizationInfoPlistKeyCamera               = @"NSCameraUsageDescription";
+static NSString *const JLAuthorizationInfoPlistKeyMicrophone           = @"NSMicrophoneUsageDescription";
+static NSString *const JLAuthorizationInfoPlistKeyPhotoLibrary         = @"NSPhotoLibraryUsageDescription";
+static NSString *const JLAuthorizationInfoPlistKeyContact              = @"NSContactsUsageDescription";
+static NSString *const JLAuthorizationInfoPlistKeyCalendar             = @"NSCalendarsUsageDescription";
+static NSString *const JLAuthorizationInfoPlistKeyReminder             = @"NSRemindersUsageDescription";
+static NSString *const JLAuthorizationInfoPlistKeyLocationWhenInUse    = @"NSLocationWhenInUseUsageDescription";
+static NSString *const JLAuthorizationInfoPlistKeyLocationAlways       = @"NSLocationAlwaysUsageDescription";
+static NSString *const JLAuthorizationInfoPlistKeyAppleMusic           = @"NSAppleMusicUsageDescription";
+static NSString *const JLAuthorizationInfoPlistKeySpeechRecognizer     = @"NSSpeechRecognitionUsageDescription";
+static NSString *const JLAuthorizationInfoPlistKeyMotion               = @"NSMotionUsageDescription";
+static NSString *const JLAuthorizationInfoPlistKeyHealthUpdate         = @"NSHealthUpdateUsageDescription";
+static NSString *const JLAuthorizationInfoPlistKeyHealthShare          = @"NSHealthShareUsageDescription";
 
 #endif /* JLConstant_h */

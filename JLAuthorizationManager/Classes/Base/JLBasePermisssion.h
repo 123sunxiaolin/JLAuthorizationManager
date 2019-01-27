@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface JLBasePermisssion : NSObject <JLAuthorizationProtocol>
 
++ (instancetype)instance;
+
 - (void)safeAsyncWithCompletion:(dispatch_block_t)completion;
 
 @end

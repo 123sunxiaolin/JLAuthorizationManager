@@ -9,12 +9,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface JLNotificationPermission : JLBasePermisssion
+@protocol JLAuthorizationNotificationProtocol <JLAuthorizationProtocol>
 
 /**
  *  For iOS 10.0, async fetch notification permission.
  */
 - (void)asyncFetchAuthorizedStatusWithCompletion:(void (^)(JLAuthorizationStatus status))completion;
+
+@end
+
+@interface JLNotificationPermission : JLBasePermisssion <JLAuthorizationNotificationProtocol>
 
 @end
 

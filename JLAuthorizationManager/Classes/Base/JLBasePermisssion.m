@@ -11,6 +11,10 @@
 @implementation JLBasePermisssion
 @synthesize type;
 
++ (instancetype)instance {
+    return [[self alloc] init];
+}
+
 - (void)safeAsyncWithCompletion:(dispatch_block_t)completion {
     if (NSThread.isMainThread) {
         if (completion) {

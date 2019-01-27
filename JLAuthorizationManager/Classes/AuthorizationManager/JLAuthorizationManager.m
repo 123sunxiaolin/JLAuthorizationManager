@@ -812,7 +812,7 @@ static NSString *const JLRequestNotificationsKey = @"JL_requestedNotifications";
 }
 
 #pragma mark - CLLocationManagerDelegate
-- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status{
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
     
     if (status == kCLAuthorizationStatusAuthorizedAlways) {
         self.mapAlwaysAuthorizedHandler ? self.mapAlwaysAuthorizedHandler() : nil;

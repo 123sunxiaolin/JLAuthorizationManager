@@ -71,6 +71,10 @@ typedef NS_ENUM(NSInteger, JLAuthorizationType) {
      */
     JLAuthorizationTypeBluetooth,
     /**
+     *  健康数据/Health
+     */
+    JLAuthorizationTypeHealth,
+    /**
      *  推特/Twitter
      */
     JLAuthorizationTypeTwitter,

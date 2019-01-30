@@ -19,7 +19,7 @@
 @implementation JLMotionPermission
 
 + (instancetype)instance {
-    NSAssert(NO, @"please user 'sharedInstance' singleton method!");
+    NSAssert(NO, @"please use 'sharedInstance' singleton method!");
     return nil;
 }
 
@@ -85,8 +85,8 @@
     [self requestMotionPermissionWithCompletion:^(JLAuthorizationStatus status) {
         weakSelf.motionPermissionStatus = status;
         if (tempStatus != status) {
-            if (self.completion) {
-                self.completion(status == JLAuthorizationStatusAuthorized);
+            if (weakSelf.completion) {
+                weakSelf.completion(status == JLAuthorizationStatusAuthorized);
             }
         }
     }];

@@ -75,6 +75,10 @@ typedef NS_ENUM(NSInteger, JLAuthorizationType) {
      */
     JLAuthorizationTypeHealth,
     /**
+     *  运动记录/Motion
+     */
+    JLAuthorizationTypeMotion,
+    /**
      *  推特/Twitter
      */
     JLAuthorizationTypeTwitter,
@@ -100,7 +104,7 @@ typedef NS_ENUM(NSInteger, JLAuthorizationStatus) {
     JLAuthorizationStatusNotDetermined = 0,
     JLAuthorizationStatusAuthorized,
     JLAuthorizationStatusUnAuthorized,
-    JLAuthorizationStatusLocationDisabled,
+    JLAuthorizationStatusDisabled,
 };
 
 #pragma mark - Constant Key

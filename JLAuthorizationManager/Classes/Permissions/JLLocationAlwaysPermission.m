@@ -24,7 +24,7 @@
 - (JLAuthorizationStatus)authorizationStatus {
     
     if (![CLLocationManager locationServicesEnabled]) {
-        return  JLAuthorizationStatusLocationDisabled;
+        return  JLAuthorizationStatusDisabled;
     }
     
     CLAuthorizationStatus status = CLLocationManager.authorizationStatus;

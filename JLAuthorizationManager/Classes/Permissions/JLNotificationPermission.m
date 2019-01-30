@@ -93,7 +93,7 @@
         
     } else {
         if (completion) {
-            completion(JLAuthorizationStatusLocationDisabled);
+            completion(JLAuthorizationStatusDisabled);
         }
     }
 }

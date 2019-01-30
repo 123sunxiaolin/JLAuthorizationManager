@@ -31,7 +31,7 @@
         }
         
     } else {
-        return JLAuthorizationStatusLocationDisabled;
+        return JLAuthorizationStatusDisabled;
     }
 }
 

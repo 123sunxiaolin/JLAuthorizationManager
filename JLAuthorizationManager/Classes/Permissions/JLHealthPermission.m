@@ -31,7 +31,7 @@
 - (JLAuthorizationStatus)authorizationStatus {
     
     if ([HKHealthStore isHealthDataAvailable]) {
-        return JLAuthorizationStatusLocationDisabled;
+        return JLAuthorizationStatusDisabled;
     }
     
     NSMutableArray *statusForHealth = [NSMutableArray new];
@@ -62,7 +62,7 @@
             return JLAuthorizationStatusAuthorized;
         }
     } else {
-        return JLAuthorizationStatusLocationDisabled;
+        return JLAuthorizationStatusDisabled;
     }
 }
 

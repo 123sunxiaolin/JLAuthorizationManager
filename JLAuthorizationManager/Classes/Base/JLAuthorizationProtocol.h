@@ -31,6 +31,12 @@ typedef void (^JLAuthorizationCompletion)(BOOL);
  */
 - (void)requestAuthorizationWithCompletion:(JLAuthorizationCompletion)completion;
 
+@optional
+/**
+ Wheather add specific permission description key needed.
+ */
+- (BOOL)hasSpecificPermissionKeyFromInfoPlist;
+
 @end
 
 NS_ASSUME_NONNULL_END

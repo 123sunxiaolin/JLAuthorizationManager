@@ -33,8 +33,52 @@
     return JLAuthorizationStatusNotDetermined;
 }
 
+- (BOOL)hasSpecificPermissionKeyFromInfoPlist {
+    return YES;
+}
+
 - (void)requestAuthorizationWithCompletion:(nonnull JLAuthorizationCompletion)completion {}
 
-
+- (NSString *)permissionDescriptionKey {
+    switch (self.type) {
+        case JLAuthorizationTypePhotoLibrary:
+            return JLAuthorizationInfoPlistKeyPhotoLibrary;
+            break;
+        case JLAuthorizationTypeCamera:
+            return JLAuthorizationInfoPlistKeyCamera;
+            break;
+        case JLAuthorizationTypeMicrophone:
+            return JLAuthorizationInfoPlistKeyMicrophone;
+            break;
+        case JLAuthorizationTypeAddressBook:
+            return JLAuthorizationInfoPlistKeyContact;
+            break;
+        case JLAuthorizationTypeCalendar:
+            return JLAuthorizationInfoPlistKeyCalendar;
+            break;
+        case JLAuthorizationTypeMapWhenInUse:
+            return JLAuthorizationInfoPlistKeyLocationWhenInUse;
+            break;
+        case JLAuthorizationTypeMapAlways:
+            return JLAuthorizationInfoPlistKeyLocationAlways;
+            break;
+        case JLAuthorizationTypeAppleMusic:
+            return JLAuthorizationInfoPlistKeyAppleMusic;
+            break;
+        case JLAuthorizationTypeSpeechRecognizer:
+            return JLAuthorizationInfoPlistKeySpeechRecognizer;
+            break;
+        case JLAuthorizationTypeMotion:
+            return JLAuthorizationInfoPlistKeyMotion;
+            break;
+        case JLAuthorizationTypeHealth:// only return healthShareType
+            return JLAuthorizationInfoPlistKeyHealthShare;
+            break;
+            
+        default:
+            return @" ";
+            break;
+    }
+}
 
 @end

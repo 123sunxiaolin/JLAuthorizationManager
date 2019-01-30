@@ -31,7 +31,14 @@
     }
 }
 
+- (BOOL)hasSpecificPermissionKeyFromInfoPlist {
+    return [[NSBundle mainBundle] objectForInfoDictionaryKey:self.permissionDescriptionKey];
+}
+
 - (void)requestAuthorizationWithCompletion:(JLAuthorizationCompletion)completion {
+    NSString *desc = [NSString stringWithFormat:@"%@ not found in Info.plist.", self.permissionDescriptionKey];
+    NSAssert([self hasSpecificPermissionKeyFromInfoPlist], desc);
+    
     JLAuthorizationStatus status = [self authorizationStatus];
     if (status == JLAuthorizationStatusNotDetermined) {
         [AVCaptureDevice requestAccessForMediaType:AVMediaTypeAudio completionHandler:^(BOOL granted) {

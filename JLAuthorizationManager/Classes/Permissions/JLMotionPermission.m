@@ -92,7 +92,14 @@
     }];
 }
 
+- (BOOL)hasSpecificPermissionKeyFromInfoPlist {
+    return [[NSBundle mainBundle] objectForInfoDictionaryKey:self.permissionDescriptionKey];
+}
+
 - (void)requestMotionPermissionWithCompletion:(void (^)(JLAuthorizationStatus status))completion {
+    
+    NSString *desc = [NSString stringWithFormat:@"%@ not found in Info.plist.", self.permissionDescriptionKey];
+    NSAssert([self hasSpecificPermissionKeyFromInfoPlist], desc);
     
     NSDate *date = [NSDate date];
     __weak typeof(self) weakSelf = self;

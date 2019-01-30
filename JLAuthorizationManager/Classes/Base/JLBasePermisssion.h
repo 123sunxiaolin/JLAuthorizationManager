@@ -17,6 +17,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)safeAsyncWithCompletion:(dispatch_block_t)completion;
 
+/**
+ Get specific description key due to permission type.
+ */
+- (NSString *)permissionDescriptionKey;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -30,7 +30,7 @@
 
 - (JLAuthorizationStatus)authorizationStatus {
     
-    if ([HKHealthStore isHealthDataAvailable]) {
+    if (![HKHealthStore isHealthDataAvailable]) {
         return JLAuthorizationStatusDisabled;
     }
     
@@ -66,15 +66,21 @@
     }
 }
 
+- (NSString *)permissionDescriptionKey {
+    if (self.shareTypes.count > 0) {
+        return JLAuthorizationInfoPlistKeyHealthShare;
+    }
+    return JLAuthorizationInfoPlistKeyHealthUpdate;
+}
+
+- (BOOL)hasSpecificPermissionKeyFromInfoPlist {
+    return [[NSBundle mainBundle] objectForInfoDictionaryKey:self.permissionDescriptionKey];
+}
+
 - (void)requestAuthorizationWithCompletion:(JLAuthorizationCompletion)completion {
     
-    if (self.shareTypes.count > 0) {
-        id isHasHealthSharePlistKey = [[NSBundle mainBundle] objectForInfoDictionaryKey:JLAuthorizationInfoPlistKeyHealthShare];
-        NSAssert(isHasHealthSharePlistKey, @"NSHealthShareUsageDescription not found in Info.plist.");
-    }
-    
-    id isHasHealthUpdatePlistKey = [[NSBundle mainBundle] objectForInfoDictionaryKey:JLAuthorizationInfoPlistKeyHealthUpdate];
-    NSAssert(isHasHealthUpdatePlistKey, @"NSHealthUpdateUsageDescription not found in Info.plist.");
+    NSString *desc = [NSString stringWithFormat:@"%@ not found in Info.plist.", self.permissionDescriptionKey];
+    NSAssert([self hasSpecificPermissionKeyFromInfoPlist], desc);
     
     JLAuthorizationStatus status = [self authorizationStatus];
     if (status == JLAuthorizationStatusNotDetermined) {

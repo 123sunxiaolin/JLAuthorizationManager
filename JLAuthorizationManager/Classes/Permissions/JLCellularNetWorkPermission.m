@@ -11,7 +11,7 @@
 @implementation JLCellularNetWorkPermission
 
 - (JLAuthorizationType)type {
-    return JLAuthorizationTypeSpeechRecognizer;
+    return JLAuthorizationTypeCellularNetWork;
 }
 
 - (JLAuthorizationStatus)authorizationStatus {

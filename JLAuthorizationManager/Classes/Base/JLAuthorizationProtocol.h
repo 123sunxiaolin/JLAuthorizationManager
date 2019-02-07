@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void (^JLAuthorizationCompletion)(BOOL);
+typedef void (^JLAuthorizationCompletion)(BOOL granted);
 
 @protocol JLAuthorizationProtocol <NSObject>
 

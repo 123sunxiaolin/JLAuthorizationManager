@@ -56,6 +56,9 @@
         case JLAuthorizationTypeCalendar:
             return JLAuthorizationInfoPlistKeyCalendar;
             break;
+        case JLAuthorizationTypeReminder:
+            return JLAuthorizationInfoPlistKeyReminder;
+            break;
         case JLAuthorizationTypeMapWhenInUse:
             return JLAuthorizationInfoPlistKeyLocationWhenInUse;
             break;

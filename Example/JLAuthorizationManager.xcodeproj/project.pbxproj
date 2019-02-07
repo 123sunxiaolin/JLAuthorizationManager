@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1BC2D66321F990EE003307EE /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BC2D66221F990EE003307EE /* HealthKit.framework */; };
+		1BC830622211267A00D01469 /* JLSinglePermissionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC830612211267A00D01469 /* JLSinglePermissionViewController.m */; };
 		375628B0D22F77FB83C21D8A /* Pods_JLAuthorizationManager_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF1825BF3AC419603B7D3682 /* Pods_JLAuthorizationManager_Tests.framework */; };
 		44856843221498E3FA950250 /* Pods_JLAuthorizationManager_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73C01902E8A12AC9D7DD9CFB /* Pods_JLAuthorizationManager_Example.framework */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
@@ -40,6 +41,8 @@
 /* Begin PBXFileReference section */
 		1BC2D66221F990EE003307EE /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		1BC2D66421F990EE003307EE /* JLAuthorizationManager_Example.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = JLAuthorizationManager_Example.entitlements; sourceTree = "<group>"; };
+		1BC830602211267A00D01469 /* JLSinglePermissionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JLSinglePermissionViewController.h; sourceTree = "<group>"; };
+		1BC830612211267A00D01469 /* JLSinglePermissionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JLSinglePermissionViewController.m; sourceTree = "<group>"; };
 		3CEBCD1F968DB9F13B8FE172 /* Pods-JLAuthorizationManager_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JLAuthorizationManager_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JLAuthorizationManager_Tests/Pods-JLAuthorizationManager_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* JLAuthorizationManager_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JLAuthorizationManager_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -154,6 +157,8 @@
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
 				6003F5A5195388D20070C39A /* JLViewController.h */,
 				6003F5A6195388D20070C39A /* JLViewController.m */,
+				1BC830602211267A00D01469 /* JLSinglePermissionViewController.h */,
+				1BC830612211267A00D01469 /* JLSinglePermissionViewController.m */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
@@ -388,6 +393,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6003F59E195388D20070C39A /* JLAppDelegate.m in Sources */,
+				1BC830622211267A00D01469 /* JLSinglePermissionViewController.m in Sources */,
 				6003F5A7195388D20070C39A /* JLViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 			);

@@ -17,6 +17,20 @@
 
 @implementation JLLocationAlwaysPermission
 
++ (instancetype)instance {
+    NSAssert(NO, @"please use 'sharedInstance' singleton method!");
+    return nil;
+}
+
++ (instancetype)sharedInstance {
+    static JLLocationAlwaysPermission *instance = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        instance = [[JLLocationAlwaysPermission alloc] init];
+    });
+    return instance;
+}
+
 - (JLAuthorizationType)type {
     return JLAuthorizationTypeMapAlways;
 }

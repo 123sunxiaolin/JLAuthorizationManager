@@ -11,6 +11,7 @@
 @import JLAuthorizationManager;
 
 #import "JLViewController.h"
+#import "JLSinglePermissionViewController.h"
 
 
 @interface JLViewController ()<UITableViewDataSource, UITableViewDelegate>{
@@ -19,6 +20,8 @@
 }
 
 @property (nonatomic, strong) UITableView *authTableView;
+@property (nonatomic, strong) UIBarButtonItem *rightButtonItem;
+@property (nonatomic, strong) UIButton *authorizationButton;
 
 @end
 
@@ -28,9 +31,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.navigationItem.rightBarButtonItem = self.rightButtonItem;
+    
     self.title = @"权限集锦";
     _authDataArray = @[@"相册/PhotoLibrary",
-                       @"网络/Cellular Network",
+                       @"蜂窝网络/Cellular Network",
                        @"相机/Camera",
                        @"麦克风/Audio",
                        @"通讯录/AddressBook",
@@ -79,8 +84,34 @@
     }
     return _authTableView;
 }
+
 #pragma mark - Action
+- (void)authorizationButtonClick:(id)sender {
+    JLSinglePermissionViewController *singleVC = [[JLSinglePermissionViewController alloc] init];
+    [self.navigationController pushViewController:singleVC animated:YES];
+}
+
 #pragma mark - Private
+#pragma mark - Getters
+- (UIBarButtonItem *)rightButtonItem {
+    if (!_rightButtonItem) {
+        _rightButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.authorizationButton];
+    }
+    return _rightButtonItem;
+}
+
+- (UIButton *)authorizationButton {
+    if (!_authorizationButton) {
+        _authorizationButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_authorizationButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_authorizationButton setTitle:@"权限2" forState:UIControlStateNormal];
+        [_authorizationButton addTarget:self
+                                 action:@selector(authorizationButtonClick:)
+                       forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _authorizationButton;
+}
+
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;

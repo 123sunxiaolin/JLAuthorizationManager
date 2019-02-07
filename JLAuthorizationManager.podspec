@@ -31,11 +31,90 @@ TODO: Add long description of the pod here.
   s.requires_arc = true
   s.source_files = 'JLAuthorizationManager/Classes/**/*'
   
-  # s.resource_bundles = {
-  #   'JLAuthorizationManager' => ['JLAuthorizationManager/Assets/*.png']
-  # }
+  s.default_subspec  = 'All'
+  
+  s.subspec 'All' do |ss|
+      ss.source_files = 'JLAuthorizationManager/Classes/Base/', 'JLAuthorizationManager/Classes/Permissions/'
+  end
+  
+  s.subspec 'Base' do |ss|
+      ss.source_files = 'JLAuthorizationManager/Classes/Base/*'
+  end
+  
+  s.subspec 'AuthorizationManager' do |ss|
+      ss.source_files = 'JLAuthorizationManager/Classes/AuthorizationManager/*'
+      ss.dependency 'JLAuthorizationManager/Base'
+  end
+  
+  s.subspec 'Microphone' do |ss|
+      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLMicrophonePermission.{h, m}'
+      ss.dependency 'JLAuthorizationManager/Base'
+  end
+  
+  s.subspec 'Notification' do |ss|
+      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLNotificationPermission.{h, m}'
+      ss.dependency 'JLAuthorizationManager/Base'
+  end
+  
+  s.subspec 'Photos' do |ss|
+      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLPhotosPermission.{h, m}'
+      ss.dependency 'JLAuthorizationManager/Base'
+  end
+  
+  s.subspec 'CellularNetwork' do |ss|
+      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLCellularNetWorkPermission.{h, m}'
+      ss.dependency 'JLAuthorizationManager/Base'
+  end
+  
+  s.subspec 'Contact' do |ss|
+      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLContactPermission.{h, m}'
+      ss.dependency 'JLAuthorizationManager/Base'
+  end
+  
+  s.subspec 'Calendar' do |ss|
+      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLCalendarPermission.{h, m}'
+      ss.dependency 'JLAuthorizationManager/Base'
+  end
+  
+  s.subspec 'Reminder' do |ss|
+      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLReminderPermission.{h, m}'
+      ss.dependency 'JLAuthorizationManager/Base'
+  end
+  
+  s.subspec 'Location' do |ss|
+      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLLocationAlwaysPermission.{h, m}', 'JLAuthorizationManager/Classes/Permissions/JLLocationInUsePermission.{h, m}'
+      ss.dependency 'JLAuthorizationManager/Base'
+  end
+  
+  s.subspec 'AppleMusic' do |ss|
+      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLAppleMusicPermission.{h, m}'
+      ss.dependency 'JLAuthorizationManager/Base'
+  end
+  
+  s.subspec 'SpeechRecognizer' do |ss|
+      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLSpeechRecognizerPermission.{h, m}'
+      ss.dependency 'JLAuthorizationManager/Base'
+  end
+  
+  s.subspec 'Siri' do |ss|
+      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLSiriPermission.{h, m}'
+      ss.dependency 'JLAuthorizationManager/Base'
+  end
+  
+  s.subspec 'Motion' do |ss|
+      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLMotionPermission.{h, m}'
+      ss.dependency 'JLAuthorizationManager/Base'
+  end
+  
+  s.subspec 'Bluetooth' do |ss|
+      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLBluetoothPermission.{h, m}', 'JLAuthorizationManager/Classes/Permissions/JLBluetoothPeripheralPermission.{h, m}'
+      ss.dependency 'JLAuthorizationManager/Base'
+  end
+  
+  s.subspec 'Health' do |ss|
+      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLHealthPermission.{h, m}'
+      ss.dependency 'JLAuthorizationManager/Base'
+  end
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  
 end

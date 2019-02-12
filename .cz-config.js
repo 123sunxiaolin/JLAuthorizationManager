@@ -19,6 +19,7 @@ module.exports = {
   ],
 
   scopes: [
+    {name: 'Podspec'},
     {name: 'AuthorizationManager'},
     {name: 'Base'},
     {name: 'Camera'},

@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'JLAuthorizationManager'
-  s.version          = '2.0.0'
+  s.version          = '2.0.1'
   s.summary          = 'A Project can provide uniform method for system authorization accesses.'
 
 # This description is used to generate tags and improve search results.
@@ -47,72 +47,72 @@ TODO: Add long description of the pod here.
   end
   
   s.subspec 'Microphone' do |ss|
-      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLMicrophonePermission.{h, m}'
+      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLMicrophonePermission.{h,m}'
       ss.dependency 'JLAuthorizationManager/Base'
   end
   
   s.subspec 'Notification' do |ss|
-      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLNotificationPermission.{h, m}'
+      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLNotificationPermission.{h,m}'
       ss.dependency 'JLAuthorizationManager/Base'
   end
   
   s.subspec 'Photos' do |ss|
-      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLPhotosPermission.{h, m}'
+      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLPhotosPermission.{h,m}'
       ss.dependency 'JLAuthorizationManager/Base'
   end
   
   s.subspec 'CellularNetwork' do |ss|
-      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLCellularNetWorkPermission.{h, m}'
+      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLCellularNetWorkPermission.{h,m}'
       ss.dependency 'JLAuthorizationManager/Base'
   end
   
   s.subspec 'Contact' do |ss|
-      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLContactPermission.{h, m}'
+      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLContactPermission.{h,m}'
       ss.dependency 'JLAuthorizationManager/Base'
   end
   
   s.subspec 'Calendar' do |ss|
-      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLCalendarPermission.{h, m}'
+      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLCalendarPermission.{h,m}'
       ss.dependency 'JLAuthorizationManager/Base'
   end
   
   s.subspec 'Reminder' do |ss|
-      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLReminderPermission.{h, m}'
+      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLReminderPermission.{h,m}'
       ss.dependency 'JLAuthorizationManager/Base'
   end
   
   s.subspec 'Location' do |ss|
-      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLLocationAlwaysPermission.{h, m}', 'JLAuthorizationManager/Classes/Permissions/JLLocationInUsePermission.{h, m}'
+      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLLocationAlwaysPermission.{h, m}', 'JLAuthorizationManager/Classes/Permissions/JLLocationInUsePermission.{h,m}'
       ss.dependency 'JLAuthorizationManager/Base'
   end
   
   s.subspec 'AppleMusic' do |ss|
-      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLAppleMusicPermission.{h, m}'
+      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLAppleMusicPermission.{h,m}'
       ss.dependency 'JLAuthorizationManager/Base'
   end
   
   s.subspec 'SpeechRecognizer' do |ss|
-      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLSpeechRecognizerPermission.{h, m}'
+      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLSpeechRecognizerPermission.{h,m}'
       ss.dependency 'JLAuthorizationManager/Base'
   end
   
   s.subspec 'Siri' do |ss|
-      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLSiriPermission.{h, m}'
+      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLSiriPermission.{h,m}'
       ss.dependency 'JLAuthorizationManager/Base'
   end
   
   s.subspec 'Motion' do |ss|
-      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLMotionPermission.{h, m}'
+      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLMotionPermission.{h,m}'
       ss.dependency 'JLAuthorizationManager/Base'
   end
   
   s.subspec 'Bluetooth' do |ss|
-      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLBluetoothPermission.{h, m}', 'JLAuthorizationManager/Classes/Permissions/JLBluetoothPeripheralPermission.{h, m}'
+      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLBluetoothPermission.{h,m}', 'JLAuthorizationManager/Classes/Permissions/JLBluetoothPeripheralPermission.{h,m}'
       ss.dependency 'JLAuthorizationManager/Base'
   end
   
   s.subspec 'Health' do |ss|
-      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLHealthPermission.{h, m}'
+      ss.source_files = 'JLAuthorizationManager/Classes/Permissions/JLHealthPermission.{h,m}'
       ss.dependency 'JLAuthorizationManager/Base'
   end
 

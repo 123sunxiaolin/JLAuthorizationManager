@@ -141,6 +141,7 @@ Tips and Tricks
 
 Update Note
 ---------------
+- v**2.0.2**:Update podSpec file.
 - v**2.0.0**:Divide all permissions into single permission file to avoid fail to commit **AppStore** and provide various ways to request.
 - v**1.1.0**:Optimize request methods and add notification permission.
 - v**1.0.0**:Provide simple usage of permission for developer and all request usages are in unique class-**JLAuthorizationManager**.

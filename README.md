@@ -10,10 +10,6 @@ JLAuthorizationManager
 
 At present, the lib has supported **Objective-C** version and **Swift** version 
 
-**JLAuthorizationManager** provides uniform method by using `JL_requestAuthorizationWithAuthorizationType:authorizedHandler:unAuthorizedHandler:` except when request access to `HealthKit` by using `JL_requestHealthAuthorizationWithShareTypes:readTypes:authorizedHandler:unAuthorizedHandler:`
-
-**JLAuthorizationManager** also provides singleton method by using `+ (JLAuthorizationManager *)defaultManager;`,and other methods all are instance method.You can choose any authorization type from an enum type `JLAuthorizationType`.
-
 ## Features
 - [x] Full coverage, currently supports access to **Photos**, **Camera**, **CellularNetwork**, **Microphone**, **Calendar**, **Reminder**, **Notification**, **Location**, **AppleMusic**, **SpeechRecognizer**, **Siri**, **Bluetooth** etc.
 - [x] Easy-to-use, unified interface and separated singe permission.Avoid submitting App Store rejected issues.
@@ -45,7 +41,7 @@ pod 'JLAuthorizationManager/Microphone'
 
 ```
 - Via Manually
-<br>1.first，clone project at **https://github.com/123sunxiaolin/JLAuthorizationManager.git**;
+<br>1.first，clone project from **https://github.com/123sunxiaolin/JLAuthorizationManager.git**;
 <br>2.Then, find document path `JLAuthorizationManager/Classes`, and permission file you need.Need to pay attention to, must add **Base** folder into your project before use.
 
 Tutorials

@@ -1,12 +1,13 @@
 JLAuthorizationManager
 
-![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg) ![Pod Version](https://img.shields.io/badge/Pod-v1.1.0-orange.svg) ![Pod Platform](https://img.shields.io/badge/Platform-iOS-lightgrey.svg) ![System Version](https://img.shields.io/badge/iOS-8.0-blue.svg) [![Pod License](https://img.shields.io/badge/License-MIT-333333.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
+![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg) ![Pod Version](https://img.shields.io/badge/Pod-v2.0.2-orange.svg) ![Pod Platform](https://img.shields.io/badge/Platform-iOS-lightgrey.svg) ![System Version](https://img.shields.io/badge/iOS-8.0-blue.svg) [![Pod License](https://img.shields.io/badge/License-MIT-333333.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 ---
+
+[英文文档](https://github.com/123sunxiaolin/JLAuthorizationManager)
+
+[Swift版本在这里](https://github.com/123sunxiaolin/JLAuthorizationManager-Swift)
+
 🔑 **JLAuthorizationManager** 是一个易用、轻量化、完整以及线程安全的**iOS**权限管理开源库，目前支持**Objective-C**和**Swift**两种语言。
-
-**JLAuthorizationManager** provides uniform method by using `JL_requestAuthorizationWithAuthorizationType:authorizedHandler:unAuthorizedHandler:` except when request access to `HealthKit` by using `JL_requestHealthAuthorizationWithShareTypes:readTypes:authorizedHandler:unAuthorizedHandler:`
-
-**JLAuthorizationManager** also provides singleton method by using `+ (JLAuthorizationManager *)defaultManager;`,and other methods all are instance method.You can choose any authorization type from an enum type `JLAuthorizationType`.
 
 ## 基本特性
 
@@ -28,7 +29,8 @@ JLAuthorizationManager
 <br>3.在**Podfile**对应的target中，根据业务需要添加指定的pod, 如下所示，然后执行**pod install**,在项目中使用**CocoaPods**生成的.xcworkspace运行工程;
 
 ```
-pod 'JLAuthorizationManager' // 与 pod 'JLAuthorizationManager/All' 等价
+// 与 pod 'JLAuthorizationManager/All' 等价
+pod 'JLAuthorizationManager' 
 或
 pod 'JLAuthorizationManager/AuthorizationManager'
 或
@@ -139,125 +141,29 @@ NSLog(@"%@添加权限Plist描述", permission.hasSpecificPermissionKeyFromInfoP
 
 更多用法请参照**DEMO**
 
-Getting Started
+注意事项
 ------------
-### Update Records
-- 2019-1-17: add notification、appleMusic etc permission methods.
+- 1、切记在使用权限前，需要在**Info.plist**添加对应的Key;
+- 2、在使用健康数据(HealthKit)或者Siri权限的时候，需要在**Capabilities**中打开对应的开关，同时，Xcode会自动生成**xx.entitlements**文件；
+- 如果项目不提交至App Store，可以使用统一权限管理文件**JLAuthorizationManager**;如需提交App Store，则需根据业务需求添加对应的权限请求文件，否则，会因添加无用权限导致App Store被拒。
 
-### 1、Most Authorization Access Method
-First, import header file:`#import "JLAuthorizationManager.h"`<br>
+版本更新
+------------
+- **v2.0.2** (2019-2-07) : 更新**podspec**相关配置;
+- **v2.0.0** (2019-2-07) : 将权限拆分成单一文件，提供更加灵活、可扩展性的方法，以及解决了因添加无用权限导致App Store被拒的问题;
+- **v1.1.0** (2019-1-17) : 优化请求方法，添加通知、音乐库相关权限;
+- **v1.0.0** (2017-04-13) : 将使用到的权限请求方法集中封装在** JLAuthorizationManager**文件中，提供统一入口;
 
-then,using method:
+问题与改进
+------------
+- 如您在使用该开源库过程中，遇到一些bug或者需要改进的地方，您可以直接创建**issue**说明，如您有更好的实现方式，欢迎**Pull Request**
 
-```
-- (void)JL_requestAuthorizationWithAuthorizationType:(JLAuthorizationType)authorizationType
-                                   authorizedHandler:(void(^)())authorizedHandler
-                                 unAuthorizedHandler:(void(^)())unAuthorizedHandler;
-```
-`JLAuthorizationType` contains 13 authorization types from 13 libraries, the correspondences as follows:
-
-```
-JLAuthorizationTypePhotoLibrary -> Photos/AssetsLibrary <br>
-JLAuthorizationTypeNetWork -> CoreTelephony
-JLAuthorizationTypeVideo - > AVFoundation
-JLAuthorizationTypeAudio - > AVFoundation
-JLAuthorizationTypeAddressBook - > AddressBook/Contacts
-JLAuthorizationTypeCalendar - > EventKit
-JLAuthorizationTypeReminder - > EventKit
-JLAuthorizationTypeMapAlways -> CoreLocation
-JLAuthorizationTypeMapWhenInUse -> CoreLocation
-JLAuthorizationTypeAppleMusic -> MediaPlayer
-JLAuthorizationTypeSpeechRecognizer -> Speech
-JLAuthorizationTypeSiri -> Intents
-JLAuthorizationTypeBluetooth -> CoreBluetooth
-```
-Implementation method for one example as follows:
-
-```
-[[JLAuthorizationManager defaultManager] JL_requestAuthorizationWithAuthorizationType:JLAuthorizationTypePhotoLibrary authorizedHandler:^{
-                NSLog(@"PhotoLibrary Has granted!");
-            } unAuthorizedHandler:^{
-                NSLog(@"PhotoLibrary Has Not granted!");
-            }];
-```
-> **Notes**:Call before use `[JLAuthorizationManager defaultManager]`.
-
-### 2、Special Authorization Access Method for HealthKit
-
-When you want to use `HealthKit` authorization , please use other method as follows:
-
-```
-- (void)JL_requestHealthAuthorizationWithShareTypes:(NSSet*)typesToShare
-                                          readTypes:(NSSet*)typesToRead
-                                  authorizedHandler:(void(^)())authorizedHandler
-                                unAuthorizedHandler:(void(^)())unAuthorizedHandler;
-```
-
-Paramrter `typesToShare` need user to pass some healthKit type to share(that is `write` health data to App).
-
-Paramrter `typesToRead` need user to pass some healthKit type to read.
-
-if not clear,please refer to method as follows from [Apple](https://developer.apple.com/reference/healthkit/hkhealthstore/1614152-requestauthorization):
-
-```
-- (void)requestAuthorizationToShareTypes:(nullable NSSet<HKSampleType *> *)typesToShare
-                               readTypes:(nullable NSSet<HKObjectType *> *)typesToRead
-                              completion:(void (^)(BOOL success, NSError * _Nullable error))completion;
-```
-
-Installation
-----
-- **For iOS 8+ projects** with [CocoaPods](https://cocoapods.org):
-
-    ```ruby
-     pod 'JLAuthorizationManager', '~> 1.1.0'
-    ```
-    
-- **Use Manually**
- 
- 	```manually
- 	git clone 'https://github.com/123sunxiaolin/JLAuthorizationManager.git'
- 	
- 	then, add JLAuthorizationManager folder into your app
- 	
- 	in the end, it's all right!
- 	```
- 	
-Requirements
------
-JLAuthorizationManager requires Xcode and iOS version as follows:
-
-- **iOS 8.0 or later**<br>
-
-- **Xcode 8.0 or later**
-
->**Notes:** if you want to used in xcode 8.0 earlier,please remove methods as follows,if not ,the app can't run at all.
-
-```
-- (void)p_requestSpeechRecognizerAccessWithAuthorizedHandler:(void(^)())authorizedHandler
-                                         unAuthorizedHandler:(void(^)())unAuthorizedHandler；<br>
-
-- (void)p_requestSiriAccessWithAuthorizedHandler:(void(^)())authorizedHandler
-                             unAuthorizedHandler:(void(^)())unAuthorizedHandler;
-                             
-- (void)p_requestAppleMusicAccessWithAuthorizedHandler:(void(^)())authorizedHandler
-                                   unAuthorizedHandler:(void(^)())unAuthorizedHandler;                                      
-```
-
-Tips and Tricks
----------------
-
-- **Don't** forget add authorization Description in `info.plist`.
-- if you want to use `HealthKit` or `Siri`,please open switch on `Capabilities`,then system create `xx..entitlements` file automatically.
-- if not find more, please refer to `JLAuthorizationDemo`.
-
-
-Update Note
----------------
-- v**2.0.2**:Update podSpec file.
-- v**2.0.0**:Divide all permissions into single permission file to avoid fail to commit **AppStore** and provide various ways to request.
-- v**1.1.0**:Optimize request methods and add notification permission.
-- v**1.0.0**:Provide simple usage of permission for developer and all request usages are in unique class-**JLAuthorizationManager**.
+讨论与学习
+------------
+- iOS讨论群：**709148214**
+- 微信公众号：猿视角(**iOSDevSkills**)，分享技术相关文章
+- 个人微信：**401788217**
+- [个人简书](https://www.jianshu.com/u/ef991f6d241c)
 
 License
 -------

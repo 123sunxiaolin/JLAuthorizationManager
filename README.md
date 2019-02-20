@@ -167,7 +167,7 @@ Issues and Improvements
 Discussion and Learning
 ----
 - iOS QQ group：**709148214**
-- Public Wechat：猿视角(**iOSDevSkills**)
+- Official Account(Wechat)：猿视角(**iOSDevSkills**)
 - Wechat：**401788217**
 - [Jianshu](https://www.jianshu.com/u/ef991f6d241c)
  	

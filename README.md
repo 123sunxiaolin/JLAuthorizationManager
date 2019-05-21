@@ -152,6 +152,7 @@ Tips and Tricks
 
 Update Note
 ---------------
+- **v2.1.0** (2019-5-21):fix API available version error.
 - **v2.0.2** (2019-2-07):Update podSpec file.
 - **v2.0.0** (2019-2-07):Divide all permissions into single permission file to avoid fail to commit **AppStore** and provide various ways to request.
 - **v1.1.0** (2019-1-17):Optimize request methods and add notification permission.

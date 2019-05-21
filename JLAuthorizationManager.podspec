@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'JLAuthorizationManager'
-  s.version          = '2.0.3'
+  s.version          = '2.1.0'
   s.summary          = 'A Project can provide uniform method for system authorization accesses.'
 
 # This description is used to generate tags and improve search results.

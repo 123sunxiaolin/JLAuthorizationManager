@@ -16,7 +16,7 @@
 
 - (JLAuthorizationStatus)authorizationStatus {
     
-    if (@available(iOS 10.0, *)) {
+    if (@available(iOS 9.0, *)) {
         
         CTCellularData *cellularData = [[CTCellularData alloc] init];
         CTCellularDataRestrictedState authState = cellularData.restrictedState;

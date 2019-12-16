@@ -368,21 +368,17 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-JLAuthorizationManager_Example/Pods-JLAuthorizationManager_Example-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-JLAuthorizationManager_Example/Pods-JLAuthorizationManager_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/JLAuthorizationManager/JLAuthorizationManager.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JLAuthorizationManager.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JLAuthorizationManager_Example/Pods-JLAuthorizationManager_Example-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JLAuthorizationManager_Example/Pods-JLAuthorizationManager_Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
